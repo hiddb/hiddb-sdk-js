@@ -11,31 +11,44 @@ type JWT = {
   email_verified: boolean,
   role: string,
   plan: string,
-  organization: string
+  organization: string,
+  iat: number,
+  exp: number,
 };
 
 let loginCallback: (jwt: JWT) => void;
 let logoutCallback: () => void;
 
-const state = {
+const state: {
+  _accessToken?: string,
+  _decoded?: JWT,
+  _refresh?: number,
+  accessToken?: string,
+} = {
   _accessToken: '',
-  _decoded: {},
+  _decoded: undefined,
   _refresh: undefined,
 
   get accessToken() {
     return this._accessToken;
   },
   set accessToken(accessToken) {
-    this._decoded = jwtDecode(accessToken);
+    if (accessToken === undefined) {
+      this.accessToken = accessToken;
+      return;
+    }
+
+    this._decoded = jwtDecode(accessToken) as JWT;
     if (loginCallback && typeof loginCallback === 'function' && !this._accessToken && accessToken) {
       try {
         loginCallback(this._decoded);
       } catch (_error) { }
     }
     this._accessToken = accessToken;
+    
     // try to refresh one minute before expiry
-    if (this._refresh) clearTimeout(this._refresh);
-    this._refresh = setTimeout(() => userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
+    if (this._refresh) window.clearTimeout(this._refresh);
+    this._refresh = window.setTimeout(() => userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
   }
 };
 
