@@ -24,7 +24,7 @@ const client = axios.create({
   timeout: 30000,
 });
 
-async function userLogin(email: string, password: string) {
+export async function userLogin(email: string, password: string) {
   const path = "/user/login" as const;
   const method = "post" as const;
 
@@ -42,7 +42,7 @@ async function userLogin(email: string, password: string) {
   accessToken = response.data;
 }
 
-async function listDatabases() {
+export async function listDatabases() {
   const path = "/database" as const;
   const method = "get" as const;
 
