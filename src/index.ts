@@ -6,11 +6,13 @@ let accessToken: string;
 // Make sure that the current accessToken is always included in requests
 axios.interceptors.request.use(
   function (config) {
+    const bearerToken =  `Bearer ${accessToken}`;
+    console.log(bearerToken);
     return {
       ...config,
       headers: accessToken ? {
         ...(config.headers ?? {}),
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: bearerToken,
       }: config.headers,
     };
   },
