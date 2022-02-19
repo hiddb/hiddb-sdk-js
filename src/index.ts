@@ -215,7 +215,7 @@ export async function userRefresh() {
 
   const response = await client[method]<
     paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-  >(path);
+  >(path, {});
 
   // update accessToken
   state.accessToken = response.data;
