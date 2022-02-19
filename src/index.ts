@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
@@ -14,7 +15,7 @@ const state = {
         return this._accessToken;
     },
     set accessToken(accessToken) {
-        if (!this._accessToken) {
+        if (loginCallback && typeof loginCallback === 'function' && !this._accessToken && accessToken) {
             try {
                 loginCallback();
             } catch (_error) {}
@@ -40,6 +41,16 @@ export function onLogin(callback: () => {}) {
 
 export function onLogout(callback: () => {}) {
     logoutCallback = callback;
+}
+
+export function logout() {
+    state.accessToken = undefined;
+    Cookies.remove('refresh_token');
+    if (logoutCallback && typeof logoutCallback === 'function') {
+        try {
+            logoutCallback();
+        } catch (_error) {}
+    }
 }
 
 // ------------------------------------------

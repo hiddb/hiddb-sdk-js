@@ -15,11 +15,13 @@
   "license": "ISC",
   "devDependencies": {
     "@hiddb/openapi": "github:hiddb/openapi",
+    "@types/js-cookie": "^3.0.1",
     "openapi-typescript": "^5.2.0",
     "parcel": "^2.3.2"
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2"
   }
 }
