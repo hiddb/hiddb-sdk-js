@@ -87,11 +87,7 @@ axios.interceptors.request.use(
       headers: state.accessToken ? {
         ...(config.headers ?? {}),
         Authorization: `Bearer ${state.accessToken}`,
-        'Content-Type': 'application/json',
-      } : {
-        ...(config.headers ?? {}),
-        'Content-Type': 'application/json',
-      },
+      } : config.headers,
     };
   },
   function (error) {
@@ -113,11 +109,7 @@ client.interceptors.request.use(
       headers: state.accessToken ? {
         ...(config.headers ?? {}),
         Authorization: `Bearer ${state.accessToken}`,
-        'Content-Type': 'application/json',
-      } : {
-        ...(config.headers ?? {}),
-        'Content-Type': 'application/json',
-      },
+      } : config.headers,
     };
   },
   function (error) {
