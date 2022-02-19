@@ -46,11 +46,11 @@ export function isAuthenticated() {
   return Boolean(state.accessToken);
 }
 
-export function onLogin(callback: () => typeof loginCallback) {
+export function onLogin(callback: () => {}) {
   loginCallback = callback;
 }
 
-export function onLogout(callback: () => typeof logoutCallback) {
+export function onLogout(callback: () => {}) {
   logoutCallback = callback;
 }
 
@@ -103,11 +103,11 @@ client.interceptors.request.use(
   }
 );
 
-userRefresh().catch(error => {
+/* userRefresh().catch(error => {
   if (error?.response?.status != 401) {
     console.error(error);
   }
-});
+}); */
 
 export async function userRegister(email: string, password: string) {
   const path = "/user/register" as const;
