@@ -1,15 +1,57 @@
 import axios from "axios";
+import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
-let accessToken: string;
+let loginCallback: () => {};
+let logoutCallback: () => {};
+
+const state = {
+    _accessToken: '',
+    _decoded: {},
+    _refresh: undefined,
+
+    get accessToken() {
+        return this._accessToken;
+    },
+    set accessToken(accessToken) {
+        if (!this._accessToken) {
+            try {
+                loginCallback();
+            } catch (_error) {}
+        }
+        this._accessToken = accessToken;
+        this._decoded = jwtDecode(accessToken);
+        // try to refresh one minute before expiry
+        if (this._refresh) clearTimeout(this._refresh);
+        this._refresh = setTimeout(() => userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
+    }
+};
+
+// ------------------------------------------
+// Helpers
+// ------------------------------------------
+export function isAuthenticated() {
+    return Boolean(state.accessToken);
+}
+
+export function onLogin(callback: () => {}) {
+    loginCallback = callback;
+}
+
+export function onLogout(callback: () => {}) {
+    logoutCallback = callback;
+}
+
+// ------------------------------------------
+
 
 axios.interceptors.request.use(
   function (config) {
     return {
       ...config,
-      headers: accessToken ? {
+      headers: state.accessToken ? {
         ...(config.headers ?? {}),
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${state.accessToken}`,
       } : config.headers,
     };
   },
@@ -28,9 +70,9 @@ client.interceptors.request.use(
   function (config) {
     return {
       ...config,
-      headers: accessToken ? {
+      headers: state.accessToken ? {
         ...(config.headers ?? {}),
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${state.accessToken}`,
       } : config.headers,
     };
   },
@@ -39,6 +81,11 @@ client.interceptors.request.use(
   }
 );
 
+userRefresh().catch(error => {
+    if (error?.response?.status != 401) {
+        console.error(error);
+    }
+});
 
 export async function userRegister(email: string, password: string) {
   const path = "/user/register" as const;
@@ -123,7 +170,7 @@ export async function userLogin(email: string, password: string) {
   >(path, body);
 
   // update accessToken
-  accessToken = response.data;
+  state.accessToken = response.data;
 }
 
 export async function userRefresh() {
@@ -135,7 +182,7 @@ export async function userRefresh() {
   >(path);
 
   // update accessToken
-  accessToken = response.data;
+  state.accessToken = response.data;
 }
 
 export async function machineLogin(key: string, secret: string) {
@@ -153,7 +200,7 @@ export async function machineLogin(key: string, secret: string) {
   >(path, body);
 
   // update accessToken
-  accessToken = response.data;
+  state.accessToken = response.data;
 }
 
 export async function createMachineAccount(organizationId: string, permission: "read" | "write") {
@@ -169,7 +216,6 @@ export async function createMachineAccount(organizationId: string, permission: "
     paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
   >(`/organization/${organizationId}/machine`, body);
 
-  // update accessToken
   return response.data
 }
 
@@ -181,7 +227,6 @@ export async function deleteMachineAccount(organizationId: string) {
     paths[typeof path][typeof method]["responses"]["200"]
   >(`/organization/${organizationId}/machine`);
 
-  // update accessToken
   return response.data
 }
 
@@ -408,7 +453,7 @@ export async function searchNearestDocuments(databaseId: string) {
 }
 
 
-export async function getDocument(datbaseId: string, id: string) {
+export async function getDocument(databaseId: string, id: string) {
   const path = `/collection/{collection_id}/document/${id}` as const;
   const method = "get" as const;
 
@@ -419,7 +464,7 @@ export async function getDocument(datbaseId: string, id: string) {
   return response.data;
 }
 
-export async function deleteDocument(datbaseId: string, id: string) {
+export async function deleteDocument(databaseId: string, id: string) {
   const path = `/collection/{collection_id}/document/${id}` as const;
   const method = "delete" as const;
 
