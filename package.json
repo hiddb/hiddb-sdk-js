@@ -1,0 +1,24 @@
+{
+  "name": "hiddb-sdk-js",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "build:types": "openapi-typescript \"node_modules/@hiddb/openapi/openapi.yaml\" --output src/hiddb.d.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@hiddb/openapi": "github:hiddb/openapi",
+    "openapi-typescript": "^5.2.0",
+    "parcel": "^2.3.2"
+  },
+  "dependencies": {
+    "axios": "^0.26.0"
+  }
+}
