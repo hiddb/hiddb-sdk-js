@@ -79,7 +79,7 @@ export function logout() {
 
 // ------------------------------------------
 
-
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.interceptors.request.use(
   function (config) {
     return {
@@ -101,6 +101,7 @@ const client = axios.create({
 });
 
 // Make sure that the current accessToken is always included in requests
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 client.interceptors.request.use(
   function (config) {
     return {
