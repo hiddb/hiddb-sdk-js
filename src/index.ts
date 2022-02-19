@@ -3,54 +3,65 @@ import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
-let loginCallback: () => {};
-let logoutCallback: () => {};
+type JWT = {
+  sub: string,
+  amr: [string],  // possible values: password, refresh_token, otp
+  scope: string,
+  email: string,
+  email_verified: boolean,
+  role: string,
+  plan: string,
+  organization: string
+};
+
+let loginCallback: (jwt: JWT) => void;
+let logoutCallback: () => void;
 
 const state = {
-    _accessToken: '',
-    _decoded: {},
-    _refresh: undefined,
+  _accessToken: '',
+  _decoded: {},
+  _refresh: undefined,
 
-    get accessToken() {
-        return this._accessToken;
-    },
-    set accessToken(accessToken) {
-        if (loginCallback && typeof loginCallback === 'function' && !this._accessToken && accessToken) {
-            try {
-                loginCallback();
-            } catch (_error) {}
-        }
-        this._accessToken = accessToken;
-        this._decoded = jwtDecode(accessToken);
-        // try to refresh one minute before expiry
-        if (this._refresh) clearTimeout(this._refresh);
-        this._refresh = setTimeout(() => userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
+  get accessToken() {
+    return this._accessToken;
+  },
+  set accessToken(accessToken) {
+    this._decoded = jwtDecode(accessToken);
+    if (loginCallback && typeof loginCallback === 'function' && !this._accessToken && accessToken) {
+      try {
+        loginCallback(this._decoded);
+      } catch (_error) { }
     }
+    this._accessToken = accessToken;
+    // try to refresh one minute before expiry
+    if (this._refresh) clearTimeout(this._refresh);
+    this._refresh = setTimeout(() => userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
+  }
 };
 
 // ------------------------------------------
 // Helpers
 // ------------------------------------------
 export function isAuthenticated() {
-    return Boolean(state.accessToken);
+  return Boolean(state.accessToken);
 }
 
 export function onLogin(callback: () => {}) {
-    loginCallback = callback;
+  loginCallback = callback;
 }
 
 export function onLogout(callback: () => {}) {
-    logoutCallback = callback;
+  logoutCallback = callback;
 }
 
 export function logout() {
-    state.accessToken = undefined;
-    Cookies.remove('refresh_token');
-    if (logoutCallback && typeof logoutCallback === 'function') {
-        try {
-            logoutCallback();
-        } catch (_error) {}
-    }
+  state._accessToken = undefined;
+  Cookies.remove('refresh_token');
+  if (logoutCallback && typeof logoutCallback === 'function') {
+    try {
+      logoutCallback();
+    } catch (_error) { }
+  }
 }
 
 // ------------------------------------------
@@ -93,9 +104,9 @@ client.interceptors.request.use(
 );
 
 userRefresh().catch(error => {
-    if (error?.response?.status != 401) {
-        console.error(error);
-    }
+  if (error?.response?.status != 401) {
+    console.error(error);
+  }
 });
 
 export async function userRegister(email: string, password: string) {
