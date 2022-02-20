@@ -59,11 +59,11 @@ export function isAuthenticated() {
   return Boolean(state.accessToken);
 }
 
-export function onLogin(callback: () => {}) {
+export function onLogin(callback: typeof loginCallback) {
   loginCallback = callback;
 }
 
-export function onLogout(callback: () => {}) {
+export function onLogout(callback: typeof logoutCallback) {
   logoutCallback = callback;
 }
 
