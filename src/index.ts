@@ -16,19 +16,17 @@ type JWT = {
   exp: number,
 };
 
-// const x = {} as unknown as CustomEvent<JWT>;
-
 type Events = 
-  { type: 'login', data: JWT } |
-  { type: 'logout' } | 
-  { type: 'databaseCreated' } | 
-  { type: 'databaseDeleted' } |
-  { type: 'instanceCreated' } | 
-  { type: 'instanceDeleted' } |
-  { type: 'collectionCreated' } | 
-  { type: 'collectionDeleted' } |
-  { type: 'indexCreated' } | 
-  { type: 'indexDeleted' };
+  ({ type: 'login' } & CustomEvent<JWT>) |
+  ({ type: 'logout' } & Event) | 
+  ({ type: 'databaseCreated' } & Event) | 
+  ({ type: 'databaseDeleted' } & Event) |
+  ({ type: 'instanceCreated' } & Event) | 
+  ({ type: 'instanceDeleted' } & Event) |
+  ({ type: 'collectionCreated' } & Event) | 
+  ({ type: 'collectionDeleted' } & Event) |
+  ({ type: 'indexCreated' } & Event) | 
+  ({ type: 'indexDeleted' } & Event);
 
 class State {
   private hiddb: HIDDB;
@@ -112,16 +110,16 @@ class HIDDB extends EventTarget {
   }
 
   public dispatchEvent<
-  T extends Events['type'],
-  E extends Events & { type: T }
-  >(event: Event & E): boolean {
+    T extends Events['type'],
+    E extends Events & { type: T }
+  >(event: E): boolean {
     return super.dispatchEvent(event);
   }
 
   public addEventListener<
     T extends Events['type'],
     E extends Events & { type: T }
-  >(type: T, callback: ((e: Event & E) => void) | { handleEvent: (e: Event & E) => void} | null): void {
+  >(type: T, callback: ((e: E) => void) | { handleEvent: (e: E) => void} | null): void {
     return super.addEventListener(type, callback as EventListenerOrEventListenerObject);
   }
 
