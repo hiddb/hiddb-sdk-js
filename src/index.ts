@@ -16,6 +16,8 @@ type JWT = {
   exp: number,
 };
 
+// const x = {} as unknown as CustomEvent<JWT>;
+
 type Events = 
   { type: 'login', data: JWT } |
   { type: 'logout' } | 
@@ -51,7 +53,9 @@ class State {
     this._decoded = jwtDecode(accessToken) as JWT;
     if (!this._accessToken && accessToken) {
       // @ts-expect-error
-      this.hiddb.dispatchEvent(new CustomEvent('login', JSON.parse(JSON.stringify(this._decoded))));
+      this.hiddb.dispatchEvent(new CustomEvent('login', {
+        detail: JSON.parse(JSON.stringify(this._decoded))
+      }));
     }
     this._accessToken = accessToken;
     
