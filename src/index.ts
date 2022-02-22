@@ -3,6 +3,42 @@ import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
+export default hiddb;
+
+type Events = 
+  { type: 'login', data: JWT } |
+  { type: 'logout' } | 
+  { type: 'databaseCreated' } | 
+  { type: 'databaseDeleted' } |
+  { type: 'instanceCreated' } | 
+  { type: 'instanceDeleted' } |
+  { type: 'collectionCreated' } | 
+  { type: 'collectionDeleted' } |
+  { type: 'indexCreated' } | 
+  { type: 'indexDeleted' };
+
+class HIDDB extends EventTarget {
+  public dispatchEvent<
+  T extends Events['type'],
+  E extends Events & { type: T }
+  >(event: Event & E): boolean {
+    return super.dispatchEvent(event);
+  }
+
+  public addEventListener<
+    T extends Events['type'],
+    E extends Events & { type: T }
+  >(type: T, callback: ((e: Event & E) => void) | { handleEvent: (e: Event & E) => void}): void {
+    return super.addEventListener(type, callback as EventListenerOrEventListenerObject);
+  }
+
+  public removeEventListener(type: Events['type']) {
+    super.removeEventListener(type, null)
+  }
+}
+
+var hiddb = new HIDDB();
+
 type JWT = {
   sub: string,
   amr: [string],  // possible values: password, refresh_token, otp
@@ -15,9 +51,6 @@ type JWT = {
   iat: number,
   exp: number,
 };
-
-let loginCallback: (jwt: JWT) => void;
-let logoutCallback: () => void;
 
 const state: {
   _accessToken?: string,
@@ -39,10 +72,9 @@ const state: {
     }
 
     this._decoded = jwtDecode(accessToken) as JWT;
-    if (loginCallback && typeof loginCallback === 'function' && !this._accessToken && accessToken) {
-      try {
-        loginCallback(this._decoded);
-      } catch (_error) { }
+    if (!this._accessToken && accessToken) {
+      // @ts-expect-error
+      hiddb.dispatchEvent(new Event('login'));
     }
     this._accessToken = accessToken;
     
@@ -59,22 +91,12 @@ export function isAuthenticated() {
   return Boolean(state.accessToken);
 }
 
-export function onLogin(callback: typeof loginCallback) {
-  loginCallback = callback;
-}
-
-export function onLogout(callback: typeof logoutCallback) {
-  logoutCallback = callback;
-}
-
 export function logout() {
   state._accessToken = undefined;
   Cookies.remove('refresh_token');
-  if (logoutCallback && typeof logoutCallback === 'function') {
-    try {
-      logoutCallback();
-    } catch (_error) { }
-  }
+  
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('logout'));
 }
 
 // ------------------------------------------
@@ -266,7 +288,6 @@ export async function deleteMachineAccount(organizationId: string) {
   return response.data
 }
 
-
 export async function createDatabase(name: string) {
   const path = "/database" as const;
   const method = "post" as const;
@@ -277,6 +298,9 @@ export async function createDatabase(name: string) {
   const response = await client[method]<
     paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
   >(path, body);
+
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('databaseCreated'));
 
   return response.data;
 }
@@ -311,6 +335,9 @@ export async function deleteDatabase(id: string) {
     paths['/database/{database_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
   >(path);
 
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('databaseDeleted'));
+
   return response.data;
 }
 
@@ -326,6 +353,9 @@ export async function createInstance(id: string, volume_size: number, type: "s" 
   const response = await client[method]<
     paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
   >(path, body);
+
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('instanceCreated'));
 
   return response.data;
 }
@@ -360,6 +390,9 @@ export async function deleteInstance(id: string) {
   const response = await client[method]<
     paths['/instance/{instance_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
   >(path);
+  
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('instanceDeleted'));
 
   return response.data;
 }
@@ -375,6 +408,9 @@ export async function createCollection(databaseId: string, name: string) {
   const response = await axios[method]<
     paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
   >(`https://${databaseId}.hiddb.io${path}`, body);
+
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('collectionCreated'));
 
   return response.data;
 }
@@ -409,6 +445,9 @@ export async function deleteCollection(databaseId: string, name: string) {
   const response = await client[method]<
     paths['/collection/{collection_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
   >(`https://${databaseId}.hiddb.io${path}`);
+  
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('collectionDeleted'));
 
   return response.data;
 }
@@ -424,6 +463,9 @@ export async function createIndex(databaseId: string, field_name: string, dimens
   const response = await client[method]<
     paths[typeof path][typeof method]["responses"]["200"]
   >(`https://${databaseId}.hiddb.io${path}`, body);
+  
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('indexCreated'));
 
   return response.data;
 }
@@ -458,6 +500,9 @@ export async function deleteIndex(databaseId: string, name: string) {
   const response = await client[method]<
     paths['/collection/{collection_id}/index/{index_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
   >(`https://${databaseId}.hiddb.io${path}`);
+  
+  // @ts-expect-error
+  hiddb.dispatchEvent(new Event('indexDeleted'));
 
   return response.data;
 }
