@@ -37,7 +37,7 @@ class State {
   private _key: string | undefined;
   private _secret: string | undefined;
 
-  constructor(hiddb: HIDDB, key: string | undefined, secret: string | undefined) {
+  constructor(hiddb: HIDDB, key?: string, secret?: string) {
     this.hiddb = hiddb;
     this._key = key
     this._secret = secret
@@ -81,7 +81,7 @@ class HIDDB extends EventTarget {
   private axios: AxiosInstance;
   private client: AxiosInstance;
 
-  constructor(key: string | undefined, secret: string | undefined) {
+  constructor(key?: string, secret?: string) {
     super();
     this.state = new State(this, key, secret);
 
@@ -583,4 +583,4 @@ class HIDDB extends EventTarget {
   }
 }
 
-export default new HIDDB();
+export default HIDDB;
