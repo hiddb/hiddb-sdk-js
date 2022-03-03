@@ -446,16 +446,17 @@ class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async createIndex(databaseId: string, field_name: string, dimension: number) {
-    const path = "/collection/{collection_id}/index" as const;
+  async createIndex(databaseId: string, collection_name: string, field_name: string, dimension: number) {
+    const rawPath = "/collection/{collection_id}/index" as const;
+    const path = `/collection/${collection_name}/index` as const;
     const method = "post" as const;
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
+    const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       field_id: field_name,
       dimension
     };
 
     const response = await this.axios[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     // @ts-expect-error
@@ -464,35 +465,38 @@ class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async listIndices(databaseId: string) {
-    const path = "/collection/{collection_id}/index" as const;
+  async listIndices(databaseId: string, collection_name: string) {
+    const rawPath = "/collection/{collection_id}/index" as const;
+    const path = `/collection/${collection_name}/index` as const;
     const method = "get" as const;
 
     const response = await this.axios[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     return response.data;
   }
 
 
-  async getIndex(databaseId: string, name: string) {
-    const path = `/collection/{collection_id}/index/${name}` as const;
+  async getIndex(databaseId: string, collection_name: string,  index_name: string) {
+    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "get" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}/index/{index_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     return response.data;
   }
 
-  async deleteIndex(databaseId: string, name: string) {
-    const path = `/collection/{collection_id}/index/${name}` as const;
+  async deleteIndex(databaseId: string, collection_name: string,  index_name: string) {
+    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "delete" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}/index/{index_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     // @ts-expect-error
@@ -502,49 +506,58 @@ class HIDDB extends EventTarget {
   }
 
 
-  async insertDocument(databaseId: string, document: { [key: string]: string }) {
-    const path = "/collection/{collection_id}/document" as const;
+  async insertDocument(databaseId: string, collection_name: string, document: { [key: string]: string }) {
+    const rawPath = "/collection/{collection_id}/document" as const;
+    const path = `/collection/${collection_name}/document` as const;
     const method = "post" as const;
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
+    const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       documents: [document]
     };
 
     const response = await this.axios[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     return response.data;
   }
 
-  async searchNearestDocuments(databaseId: string) {
-    const path = "/collection/{collection_id}/document/search" as const;
+  async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], field_name: string, max_neighbors: number) {
+    const rawPath = "/collection/{collection_id}/document/search" as const;
+    const path = `/collection/${collection_name}/document/search` as const;
     const method = "post" as const;
+    const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
+      vector: vector,
+      field_id: field_name,
+      max_neighbors: max_neighbors      
+    };
 
     const response = await this.axios[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+      paths[typeof rawPath][typeof method]["responses"]["200"]
+    >(`https://${databaseId}.hiddb.io${path}`, body);
 
     return response.data;
   }
 
 
-  async getDocument(databaseId: string, id: string) {
-    const path = `/collection/{collection_id}/document/${id}` as const;
+  async getDocument(databaseId: string, collection_name: string, id: string) {
+    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const path = `/collection/${collection_name}/document/${id}` as const;
     const method = "get" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}/index/{index_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     return response.data;
   }
 
-  async deleteDocument(databaseId: string, id: string) {
-    const path = `/collection/{collection_id}/document/${id}` as const;
+  async deleteDocument(databaseId: string, collection_name: string, id: string) {
+    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const path = `/collection/${collection_name}/document/${id}` as const;
     const method = "delete" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}/index/{index_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     return response.data;
