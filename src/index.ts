@@ -34,8 +34,8 @@ class State {
   private _decoded?: JWT;
   private _refresh?: number;
 
-  private _key: string | undefined;
-  private _secret: string | undefined;
+  private _key?: string;
+  private _secret?: string;
 
   constructor(hiddb: HIDDB, key?: string, secret?: string) {
     this.hiddb = hiddb;
@@ -47,11 +47,11 @@ class State {
     return this._accessToken;
   }
 
-  get _machine_key() {
+  get machineKey() {
     return this._key;
   }
 
-  get _machine_secret() {
+  get machineSecret() {
     return this._secret;
   }
 
@@ -268,9 +268,9 @@ class HIDDB extends EventTarget {
     this.state.accessToken = response.data;
   }
 
-  async refreshToken() {
-    if (this.state._machine_key && this.state._machine_secret) {
-      await this.machineLogin(this.state._machine_key, this.state._machine_secret);
+  private async refreshToken() {
+    if (this.state.machineKey && this.state.machineSecret) {
+      await this.machineLogin(this.state.machineKey, this.state.machineSecret);
       return;
     }
     await this.userRefresh();
