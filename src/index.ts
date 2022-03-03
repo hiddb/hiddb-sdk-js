@@ -34,12 +34,25 @@ class State {
   private _decoded?: JWT;
   private _refresh?: number;
 
-  constructor(hiddb: HIDDB) {
+  private _key: string | undefined;
+  private _secret: string | undefined;
+
+  constructor(hiddb: HIDDB, key: string | undefined, secret: string | undefined) {
     this.hiddb = hiddb;
+    this._key = key
+    this._secret = secret
   }
 
   get accessToken() {
     return this._accessToken;
+  }
+
+  get _machine_key() {
+    return this._key;
+  }
+
+  get _machine_secret() {
+    return this._secret;
   }
 
   set accessToken(accessToken) {
@@ -59,17 +72,18 @@ class State {
 
     // try to refresh one minute before expiry
     if (this._refresh) window.clearTimeout(this._refresh);
-    this._refresh = window.setTimeout(() => this.hiddb.userRefresh(), this._decoded.exp * 1000 - Date.now() - 60000);
+    this._refresh = window.setTimeout(() => this.hiddb.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
   }
 }
 
 class HIDDB extends EventTarget {
-  private state: State = new State(this);
+  private state: State;
   private axios: AxiosInstance;
   private client: AxiosInstance;
 
-  constructor() {
+  constructor(key: string | undefined, secret: string | undefined) {
     super();
+    this.state = new State(this, key, secret);
 
     this.axios = axios.create();
     this.axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -206,7 +220,6 @@ class HIDDB extends EventTarget {
     return response.data
   }
 
-
   async userLogin(email: string, password: string) {
     const path = "/user/login" as const;
     const method = "post" as const;
@@ -253,6 +266,14 @@ class HIDDB extends EventTarget {
 
     // update accessToken
     this.state.accessToken = response.data;
+  }
+
+  async refreshToken() {
+    if (this.state._machine_key && this.state._machine_secret) {
+      await this.machineLogin(this.state._machine_key, this.state._machine_secret);
+      return;
+    }
+    await this.userRefresh();
   }
 
   async createMachineAccount(organizationId: string, permission: "read" | "write") {
@@ -364,7 +385,6 @@ class HIDDB extends EventTarget {
 
     return response.data;
   }
-
 
   async getInstance(id: string) {
     const path = `/instance/${id}` as const;
@@ -478,7 +498,7 @@ class HIDDB extends EventTarget {
   }
 
 
-  async getIndex(databaseId: string, collection_name: string,  index_name: string) {
+  async getIndex(databaseId: string, collection_name: string, index_name: string) {
     const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "get" as const;
@@ -490,7 +510,7 @@ class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async deleteIndex(databaseId: string, collection_name: string,  index_name: string) {
+  async deleteIndex(databaseId: string, collection_name: string, index_name: string) {
     const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "delete" as const;
@@ -528,7 +548,7 @@ class HIDDB extends EventTarget {
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       vector: vector,
       field_id: field_name,
-      max_neighbors: max_neighbors      
+      max_neighbors: max_neighbors
     };
 
     const response = await this.axios[method]<
@@ -537,7 +557,6 @@ class HIDDB extends EventTarget {
 
     return response.data;
   }
-
 
   async getDocument(databaseId: string, collection_name: string, id: string) {
     const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
