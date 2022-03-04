@@ -103,7 +103,7 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": string;
+            "application/json": components["schemas"]["LoginResponse"];
           };
         };
         /** invalid parameters */
@@ -149,133 +149,6 @@ export interface paths {
             "text/plain": "Ok";
           };
         };
-      };
-    };
-  };
-  "/organization": {
-    /** Get information about organizations */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationsResponse"];
-          };
-        };
-      };
-    };
-    /** Create new organization */
-    post: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-      /** Newly created organization. */
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["OrganizationRequest"];
-        };
-      };
-    };
-  };
-  "/organization/{organization_id}": {
-    /** Get information about specific organization */
-    get: {
-      parameters: {
-        path: {
-          /** Your organization ID. You can find your organization ID in your dashboard */
-          organization_id: components["parameters"]["OrganizationId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-    };
-    /** Delete a specific organization */
-    delete: {
-      parameters: {
-        path: {
-          /** Your organization ID. You can find your organization ID in your dashboard */
-          organization_id: components["parameters"]["OrganizationId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-    };
-    parameters: {
-      path: {
-        /** Your organization ID. You can find your organization ID in your dashboard */
-        organization_id: components["parameters"]["OrganizationId"];
-      };
-    };
-  };
-  "/user": {
-    /** Get information about user in organization */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UsersResponse"];
-          };
-        };
-      };
-    };
-  };
-  "/user/{user_id}": {
-    /** Get information about specific user */
-    get: {
-      parameters: {
-        path: {
-          /** Your user ID. You can find your user ID in your dashboard */
-          user_id: components["parameters"]["UserId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UserResponse"];
-          };
-        };
-      };
-    };
-    /** Delete a specific user */
-    delete: {
-      parameters: {
-        path: {
-          /** Your user ID. You can find your user ID in your dashboard */
-          user_id: components["parameters"]["UserId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UserResponse"];
-          };
-        };
-      };
-    };
-    parameters: {
-      path: {
-        /** Your user ID. You can find your user ID in your dashboard */
-        user_id: components["parameters"]["UserId"];
       };
     };
   };
@@ -713,202 +586,180 @@ export interface paths {
 
 export interface components {
   schemas: {
+    LoginResponse: {
+      access_token: string;
+      /** @enum {string} */
+      type: "Bearer";
+    };
     MachineLogin: {
-      access_key?: string;
-      secret_key?: string;
+      access_key: string;
+      secret_key: string;
     };
     UserLogin: {
       /** Format: email */
-      email?: string;
+      email: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     UserRegister: {
       /** Format: email */
-      email?: string;
+      email: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     UserRefresh: { [key: string]: unknown };
     UserVerify: {
-      user_id?: string;
-      otp_id?: string;
+      user_id: string;
+      otp_id: string;
     };
     UserReset: {
       /** Format: email */
-      email?: string;
+      email: string;
     };
     UserUpdateReset: {
-      user_id?: string;
-      otp_id?: string;
+      user_id: string;
+      otp_id: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     PostMachineRequest: {
       /** @enum {string} */
-      permission?: "write" | "read";
+      permission: "write" | "read";
     };
     PostMachineResponse: {
-      key?: string;
-      secret?: string;
-      organization?: string;
+      key: string;
+      secret: string;
+      organization: string;
       /** @enum {string} */
-      permission?: "write" | "read";
-    };
-    OrganizationResponse: {
-      id?: string;
-      name?: string;
-      /** Format: date-time */
-      created_at?: string;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    OrganizationsResponse: {
-      organizations?: components["schemas"]["OrganizationResponse"][];
-    };
-    OrganizationRequest: {
-      name?: string;
-    };
-    UserResponse: {
-      id?: string;
-      name?: string;
-      /** @example xxxxxxxxxxxxxxxxxx */
-      organization_id?: string;
-      /** Format: date-time */
-      created_at?: string;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    UsersResponse: {
-      users?: components["schemas"]["UserResponse"][];
+      permission: "write" | "read";
     };
     InstanceRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      database_id?: string;
+      database_id: string;
       /**
        * @description Instance type
        * @default s
        * @example s
        * @enum {string}
        */
-      type?: "free" | "s" | "m" | "l";
+      type: "free" | "s" | "m" | "l";
       /**
        * @description Size of mounted and volume in gb
        * @default 10
        * @example 100
        */
-      volume_size?: number;
+      volume_size: number;
     };
     InstanceResponse: {
-      id?: string;
+      id: string;
       /** Format: date-time */
-      created_at?: string;
+      created_at: string;
       /** Format: date-time */
-      deleted_at?: string | null;
+      deleted_at: string | null;
       /** @enum {string} */
-      status?: "awake" | "asleep";
+      status: "awake" | "asleep";
       /**
        * @description Instance type
        * @default s
        * @example s
        * @enum {string}
        */
-      type?: "free" | "s" | "m" | "l";
-      server?: {
-        id?: string;
+      type: "free" | "s" | "m" | "l";
+      server: {
+        id: string;
       };
       /**
        * @description Size of mounted and volume in gb
        * @default 10
        * @example 100
        */
-      volume_size?: number;
+      volume_size: number;
     };
     InstancesResponse: {
-      instances?: components["schemas"]["InstanceResponse"][];
+      instances: components["schemas"]["InstanceResponse"][];
     };
     SleepAwakeInstance: {
       /** @enum {string} */
-      status?: "awake" | "asleep";
+      status: "awake" | "asleep";
     };
     DatabaseRequest: {
-      database_name?: string;
+      database_name: string;
     };
     DatabaseResponse: {
-      id?: string;
-      database_name?: string;
+      id: string;
+      database_name: string;
       /** @example xxxxxxxxxxxxxxxxxx */
-      organization_id?: string;
+      organization_id: string;
       /** Format: date-time */
-      created_at?: string;
+      created_at: string;
       /** Format: date-time */
-      deleted_at?: string | null;
-      instances?: components["schemas"]["InstanceResponse"][];
+      deleted_at: string | null;
+      instances: components["schemas"]["InstanceResponse"][];
     };
     DatabasesResponse: {
-      databases?: components["schemas"]["DatabaseResponse"][];
+      databases: components["schemas"]["DatabaseResponse"][];
     };
     /** @description Collection details */
     CollectionRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_id: string;
     };
     CollectionsResponse: {
-      collections?: components["schemas"]["CollectionResponse"][];
+      collections: components["schemas"]["CollectionResponse"][];
     };
     CollectionResponse: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_id: string;
     };
     IndexRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      field_id?: string;
+      field_id: string;
       /** Format: int64 */
-      dimension?: number;
+      dimension: number;
     };
     DocumentRequest: {
-      documents?: {
-        id?: string;
+      documents: {
+        id: string;
         /** @example 1,2,3 */
         field?: number[];
       }[];
     } & { [key: string]: unknown };
     DocumentResponse: {
-      id?: string;
+      id: string;
       /** @example 1,2,3 */
       field?: number[];
     } & { [key: string]: unknown };
     IndexResponse: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_id: string;
       /** @example xxxxxxxxxxxxxxxxxx */
-      field_id?: string;
+      field_id: string;
       /** Format: int64 */
-      size?: number;
+      size: number;
       /** @enum {string} */
-      distance_metric?: "euclidean";
+      distance_metric: "euclidean";
       /** Format: int64 */
-      dimension?: number;
+      dimension: number;
     };
     IndicesResponse: {
-      indices?: components["schemas"]["IndexResponse"][];
+      indices: components["schemas"]["IndexResponse"][];
     };
     SearchRequest: {
       /**
        * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
        * @example 1,2,3
        */
-      vector?: number[];
+      vector: number[];
       /**
        * @description Maximal number of neighbors to include in response
        * @default 20
        */
-      max_neighbors?: number;
+      max_neighbors: number;
       /**
        * @description This parameter specifies the index to perform the query in
        * @example xxxxxxxxxxxxxxxxxx
        */
-      field_id?: string;
+      field_id: string;
     };
     SearchResponse: string[];
   };
@@ -958,7 +809,7 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": string;
+          "application/json": components["schemas"]["LoginResponse"];
         };
       };
       /** invalid parameters */
@@ -983,7 +834,7 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": string;
+          "application/json": components["schemas"]["LoginResponse"];
         };
       };
       /** invalid parameters */
