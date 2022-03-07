@@ -72,7 +72,15 @@ class State {
 
     // try to refresh one minute before expiry
     if (this._refresh) window.clearTimeout(this._refresh);
-    this._refresh = window.setTimeout(() => this.hiddb.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
+    this._refresh = window.setTimeout(() => this.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
+  }
+
+  private async refreshToken() {
+    if (this.machineKey && this.machineSecret) {
+      await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
+      return;
+    }
+    await this.hiddb.userRefresh();
   }
 }
 
@@ -235,7 +243,7 @@ class HIDDB extends EventTarget {
     >(path, body);
 
     // update accessToken
-    this.state.accessToken = response.data;
+    this.state.accessToken = response.data.access_token;
   }
 
   async userRefresh() {
@@ -247,7 +255,7 @@ class HIDDB extends EventTarget {
     >(path, {});
 
     // update accessToken
-    this.state.accessToken = response.data;
+    this.state.accessToken = response.data.access_token;
   }
 
   async machineLogin(key: string, secret: string) {
@@ -265,15 +273,7 @@ class HIDDB extends EventTarget {
     >(path, body);
 
     // update accessToken
-    this.state.accessToken = response.data;
-  }
-
-  private async refreshToken() {
-    if (this.state.machineKey && this.state.machineSecret) {
-      await this.machineLogin(this.state.machineKey, this.state.machineSecret);
-      return;
-    }
-    await this.userRefresh();
+    this.state.accessToken = response.data.access_token;
   }
 
   async createMachineAccount(organizationId: string, permission: "read" | "write") {
