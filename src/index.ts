@@ -160,7 +160,7 @@ class HIDDB extends EventTarget {
     }
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('logout'));
+    this.dispatchEvent(new Event('logout'));
   }
 
   async userRegister(email: string, password: string) {
@@ -329,7 +329,7 @@ class HIDDB extends EventTarget {
     >(path, body);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('databaseCreated'));
+    this.dispatchEvent(new Event('databaseCreated'));
 
     return response.data;
   }
@@ -365,7 +365,7 @@ class HIDDB extends EventTarget {
     >(path);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('databaseDeleted'));
+    this.dispatchEvent(new Event('databaseDeleted'));
 
     return response.data;
   }
@@ -384,7 +384,7 @@ class HIDDB extends EventTarget {
     >(path, body);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('instanceCreated'));
+    this.dispatchEvent(new Event('instanceCreated'));
 
     return response.data;
   }
@@ -420,7 +420,7 @@ class HIDDB extends EventTarget {
     >(path);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('instanceDeleted'));
+    this.dispatchEvent(new Event('instanceDeleted'));
 
     return response.data;
   }
@@ -438,7 +438,7 @@ class HIDDB extends EventTarget {
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('collectionCreated'));
+    this.dispatchEvent(new Event('collectionCreated'));
 
     return response.data;
   }
@@ -475,7 +475,7 @@ class HIDDB extends EventTarget {
     >(`https://${databaseId}.hiddb.io${path}`);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('collectionDeleted'));
+    this.dispatchEvent(new Event('collectionDeleted'));
 
     return response.data;
   }
@@ -494,7 +494,7 @@ class HIDDB extends EventTarget {
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('indexCreated'));
+    this.dispatchEvent(new Event('indexCreated'));
 
     return response.data;
   }
@@ -534,7 +534,7 @@ class HIDDB extends EventTarget {
     >(`https://${databaseId}.hiddb.io${path}`);
 
     // @ts-expect-error
-    this.hiddb.dispatchEvent(new Event('indexDeleted'));
+    this.dispatchEvent(new Event('indexDeleted'));
 
     return response.data;
   }
