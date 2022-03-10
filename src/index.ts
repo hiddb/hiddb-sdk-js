@@ -57,7 +57,7 @@ class State {
 
   set accessToken(accessToken) {
     if (accessToken === undefined) {
-      this.accessToken = accessToken;
+      this._accessToken = accessToken;
       return;
     }
 
@@ -155,7 +155,9 @@ class HIDDB extends EventTarget {
 
   logout() {
     this.state.accessToken = undefined;
-    Cookies.remove('refresh_token');
+    if (!this.state.machineKey || !this.state.machineSecret) {
+      Cookies.remove('refresh_token');
+    }
 
     // @ts-expect-error
     this.hiddb.dispatchEvent(new Event('logout'));
