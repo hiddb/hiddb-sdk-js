@@ -276,29 +276,41 @@ class HIDDB extends EventTarget {
     this.state.accessToken = response.data.access_token;
   }
 
-  async createMachineAccount(organizationId: string, permission: "read" | "write") {
-    const path = "/organization/{organization_id}/machine" as const;
+  async createMachineAccount(machineName: string, permission: "read" | "write" | "admin") {
+    const path = "/machine" as const;
     const method = "post" as const;
 
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
     {
+      machine_name: machineName,
       permission
     };
 
     const response = await this.client[method]<
       paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`/organization/${organizationId}/machine`, body);
+    >(`/machine`, body);
 
     return response.data
   }
 
-  async deleteMachineAccount(organizationId: string) {
-    const path = "/organization/{organization_id}/machine" as const;
+  async getMachineAccounts() {
+    const path = "/machine" as const;
+    const method = "get" as const;
+
+    const response = await this.client[method]<
+      paths[typeof path][typeof method]["responses"]["200"]
+    >(`/machine`);
+
+    return response.data
+  }
+
+  async deleteMachineAccount(machineId: string) {
+    const path = "/machine/{machine_id}" as const;
     const method = "delete" as const;
 
     const response = await this.client[method]<
       paths[typeof path][typeof method]["responses"]["200"]
-    >(`/organization/${organizationId}/machine`);
+    >(`/machine/${machineId}`);
 
     return response.data
   }
@@ -356,7 +368,7 @@ class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async createInstance(id: string, volume_size: number, type: "s" | "m" | "l" | "free") {
+  async createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl") {
     const path = "/instance" as const;
     const method = "post" as const;
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {

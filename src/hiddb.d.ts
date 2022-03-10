@@ -922,4 +922,4 @@ export interface operations {
   };
 }
 
-export interface external { }
+export interface external {}
