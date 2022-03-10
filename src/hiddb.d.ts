@@ -103,7 +103,7 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": string;
+            "application/json": components["schemas"]["LoginResponse"];
           };
         };
         /** invalid parameters */
@@ -127,15 +127,19 @@ export interface paths {
     /** Machine login using access and secret token. */
     post: operations["machineLogin"];
   };
-  "/organization/{organization_id}/machine": {
-    /** Create access and secret key for a new machine */
+  "/machine": {
+    /** Get all machines in organization */
+    get: operations["getMachines"];
+    /** Create a new machine */
     post: operations["createMachine"];
+  };
+  "/machine/{machine_id}": {
     /** Delete machine account */
     delete: operations["deleteMachine"];
     parameters: {
       path: {
-        /** Your organization ID. You can find your organization ID in your dashboard */
-        organization_id: components["parameters"]["OrganizationId"];
+        /** The ID of the machine */
+        machine_id: components["parameters"]["MachineId"];
       };
     };
   };
@@ -149,133 +153,6 @@ export interface paths {
             "text/plain": "Ok";
           };
         };
-      };
-    };
-  };
-  "/organization": {
-    /** Get information about organizations */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationsResponse"];
-          };
-        };
-      };
-    };
-    /** Create new organization */
-    post: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-      /** Newly created organization. */
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["OrganizationRequest"];
-        };
-      };
-    };
-  };
-  "/organization/{organization_id}": {
-    /** Get information about specific organization */
-    get: {
-      parameters: {
-        path: {
-          /** Your organization ID. You can find your organization ID in your dashboard */
-          organization_id: components["parameters"]["OrganizationId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-    };
-    /** Delete a specific organization */
-    delete: {
-      parameters: {
-        path: {
-          /** Your organization ID. You can find your organization ID in your dashboard */
-          organization_id: components["parameters"]["OrganizationId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["OrganizationResponse"];
-          };
-        };
-      };
-    };
-    parameters: {
-      path: {
-        /** Your organization ID. You can find your organization ID in your dashboard */
-        organization_id: components["parameters"]["OrganizationId"];
-      };
-    };
-  };
-  "/user": {
-    /** Get information about user in organization */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UsersResponse"];
-          };
-        };
-      };
-    };
-  };
-  "/user/{user_id}": {
-    /** Get information about specific user */
-    get: {
-      parameters: {
-        path: {
-          /** Your user ID. You can find your user ID in your dashboard */
-          user_id: components["parameters"]["UserId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UserResponse"];
-          };
-        };
-      };
-    };
-    /** Delete a specific user */
-    delete: {
-      parameters: {
-        path: {
-          /** Your user ID. You can find your user ID in your dashboard */
-          user_id: components["parameters"]["UserId"];
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UserResponse"];
-          };
-        };
-      };
-    };
-    parameters: {
-      path: {
-        /** Your user ID. You can find your user ID in your dashboard */
-        user_id: components["parameters"]["UserId"];
       };
     };
   };
@@ -476,12 +353,12 @@ export interface paths {
       };
     };
   };
-  "/collection/{collection_id}": {
+  "/collection/{collection_name}": {
     /** Get information about a specific collection */
     get: {
       parameters: {
         path: {
-          collection_id: string;
+          collection_name: string;
         };
       };
       responses: {
@@ -497,7 +374,7 @@ export interface paths {
     delete: {
       parameters: {
         path: {
-          collection_id: string;
+          collection_name: string;
         };
       };
       responses: {
@@ -510,13 +387,13 @@ export interface paths {
       };
     };
   };
-  "/collection/{collection_id}/index": {
+  "/collection/{collection_name}/index": {
     /** Get information about an existing indices */
     get: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
         };
       };
       responses: {
@@ -533,12 +410,16 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
         };
       };
       responses: {
         /** successful operation */
-        200: unknown;
+        200: {
+          content: {
+            "application/json": components["schemas"]["IndexResponse"];
+          };
+        };
       };
       requestBody: {
         content: {
@@ -549,19 +430,19 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_id: components["parameters"]["CollectionId"];
+        collection_name: components["parameters"]["CollectionId"];
       };
     };
   };
-  "/collection/{collection_id}/index/{index_id}": {
+  "/collection/{collection_name}/index/{field_name}": {
     /** Get information about specific index */
     get: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
           /** The ID of the index */
-          index_id: components["parameters"]["IndexId"];
+          field_name: components["parameters"]["IndexId"];
         };
       };
       responses: {
@@ -580,9 +461,9 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
           /** The ID of the index */
-          index_id: components["parameters"]["IndexId"];
+          field_name: components["parameters"]["IndexId"];
         };
       };
       responses: {
@@ -599,19 +480,19 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_id: components["parameters"]["CollectionId"];
+        collection_name: components["parameters"]["CollectionId"];
         /** The ID of the index */
-        index_id: components["parameters"]["IndexId"];
+        field_name: components["parameters"]["IndexId"];
       };
     };
   };
-  "/collection/{collection_id}/document": {
-    /** Insert document. The field "field_id" will be indexed by all existing indices */
+  "/collection/{collection_name}/document": {
+    /** Insert document. The field "field_name" will be indexed by all existing indices */
     post: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
         };
       };
       responses: {
@@ -627,17 +508,17 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_id: components["parameters"]["CollectionId"];
+        collection_name: components["parameters"]["CollectionId"];
       };
     };
   };
-  "/collection/{collection_id}/document/search": {
+  "/collection/{collection_name}/document/search": {
     /** Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead */
     post: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
         };
       };
       responses: {
@@ -657,17 +538,17 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_id: components["parameters"]["CollectionId"];
+        collection_name: components["parameters"]["CollectionId"];
       };
     };
   };
-  "/collection/{collection_id}/document/{document_id}": {
+  "/collection/{collection_name}/document/{document_id}": {
     /** Get document by ID */
     get: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
           /** The ID of the index */
           document_id: components["parameters"]["DocumentId"];
         };
@@ -686,7 +567,7 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_id: components["parameters"]["CollectionId"];
+          collection_name: components["parameters"]["CollectionId"];
           /** The ID of the index */
           document_id: components["parameters"]["DocumentId"];
         };
@@ -703,7 +584,7 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_id: components["parameters"]["CollectionId"];
+        collection_name: components["parameters"]["CollectionId"];
         /** The ID of the index */
         document_id: components["parameters"]["DocumentId"];
       };
@@ -713,204 +594,195 @@ export interface paths {
 
 export interface components {
   schemas: {
+    LoginResponse: {
+      access_token: string;
+      /** @enum {string} */
+      type: "Bearer";
+    };
     MachineLogin: {
-      access_key?: string;
-      secret_key?: string;
+      access_key: string;
+      secret_key: string;
     };
     UserLogin: {
       /** Format: email */
-      email?: string;
+      email: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     UserRegister: {
       /** Format: email */
-      email?: string;
+      email: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     UserRefresh: { [key: string]: unknown };
     UserVerify: {
-      user_id?: string;
-      otp_id?: string;
+      user_id: string;
+      otp_id: string;
     };
     UserReset: {
       /** Format: email */
-      email?: string;
+      email: string;
     };
     UserUpdateReset: {
-      user_id?: string;
-      otp_id?: string;
+      user_id: string;
+      otp_id: string;
       /** Format: password */
-      password?: string;
+      password: string;
     };
     PostMachineRequest: {
+      machine_name: string;
       /** @enum {string} */
-      permission?: "write" | "read";
+      permission: "write" | "read" | "admin";
     };
     PostMachineResponse: {
-      key?: string;
-      secret?: string;
-      organization?: string;
+      machine_name: string;
+      id: string;
+      key: string;
+      secret: string;
       /** @enum {string} */
-      permission?: "write" | "read";
+      permission: "write" | "read" | "admin";
     };
-    OrganizationResponse: {
-      id?: string;
-      name?: string;
-      /** Format: date-time */
-      created_at?: string;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    OrganizationsResponse: {
-      organizations?: components["schemas"]["OrganizationResponse"][];
-    };
-    OrganizationRequest: {
-      name?: string;
-    };
-    UserResponse: {
-      id?: string;
-      name?: string;
-      /** @example xxxxxxxxxxxxxxxxxx */
-      organization_id?: string;
-      /** Format: date-time */
-      created_at?: string;
-      /** Format: date-time */
-      deleted_at?: string | null;
-    };
-    UsersResponse: {
-      users?: components["schemas"]["UserResponse"][];
+    GetMachinesResponse: {
+      machines?: {
+        machine_name: string;
+        id: string;
+        key: string;
+        /** @enum {string} */
+        permission: "write" | "read" | "admin";
+      }[];
     };
     InstanceRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      database_id?: string;
+      database_id: string;
       /**
        * @description Instance type
        * @default s
        * @example s
        * @enum {string}
        */
-      type?: "free" | "s" | "m" | "l";
+      type: "xs" | "s" | "m" | "l" | "xl";
       /**
        * @description Size of mounted and volume in gb
        * @default 10
        * @example 100
        */
-      volume_size?: number;
+      volume_size: number;
     };
     InstanceResponse: {
-      id?: string;
+      id: string;
       /** Format: date-time */
-      created_at?: string;
+      created_at: string;
       /** Format: date-time */
-      deleted_at?: string | null;
+      deleted_at: string | null;
       /** @enum {string} */
-      status?: "awake" | "asleep";
+      status: "awake" | "asleep";
       /**
        * @description Instance type
        * @default s
        * @example s
        * @enum {string}
        */
-      type?: "free" | "s" | "m" | "l";
-      server?: {
-        id?: string;
+      type: "xs" | "s" | "m" | "l" | "xl";
+      server: {
+        id: string;
       };
       /**
        * @description Size of mounted and volume in gb
        * @default 10
        * @example 100
        */
-      volume_size?: number;
+      volume_size: number;
     };
     InstancesResponse: {
-      instances?: components["schemas"]["InstanceResponse"][];
+      instances: components["schemas"]["InstanceResponse"][];
     };
     SleepAwakeInstance: {
       /** @enum {string} */
-      status?: "awake" | "asleep";
+      status: "awake" | "asleep";
     };
     DatabaseRequest: {
-      database_name?: string;
+      database_name: string;
     };
     DatabaseResponse: {
-      id?: string;
-      database_name?: string;
+      id: string;
+      database_name: string;
       /** @example xxxxxxxxxxxxxxxxxx */
-      organization_id?: string;
+      organization_id: string;
       /** Format: date-time */
-      created_at?: string;
+      created_at: string;
       /** Format: date-time */
-      deleted_at?: string | null;
-      instances?: components["schemas"]["InstanceResponse"][];
+      deleted_at: string | null;
+      instances: components["schemas"]["InstanceResponse"][];
     };
     DatabasesResponse: {
-      databases?: components["schemas"]["DatabaseResponse"][];
+      databases: components["schemas"]["DatabaseResponse"][];
     };
     /** @description Collection details */
     CollectionRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_name: string;
     };
     CollectionsResponse: {
-      collections?: components["schemas"]["CollectionResponse"][];
+      collections: components["schemas"]["CollectionResponse"][];
     };
     CollectionResponse: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_name: string;
     };
     IndexRequest: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      field_id?: string;
+      field_name: string;
       /** Format: int64 */
-      dimension?: number;
+      dimension: number;
     };
     DocumentRequest: {
-      documents?: {
-        id?: string;
+      documents: {
+        id: string;
         /** @example 1,2,3 */
         field?: number[];
       }[];
     } & { [key: string]: unknown };
     DocumentResponse: {
-      id?: string;
+      id: string;
       /** @example 1,2,3 */
       field?: number[];
     } & { [key: string]: unknown };
     IndexResponse: {
       /** @example xxxxxxxxxxxxxxxxxx */
-      collection_id?: string;
+      collection_name: string;
       /** @example xxxxxxxxxxxxxxxxxx */
-      field_id?: string;
+      field_name: string;
       /** Format: int64 */
-      size?: number;
+      size: number;
       /** @enum {string} */
-      distance_metric?: "euclidean";
+      distance_metric: "euclidean";
       /** Format: int64 */
-      dimension?: number;
+      dimension: number;
     };
     IndicesResponse: {
-      indices?: components["schemas"]["IndexResponse"][];
+      indices: components["schemas"]["IndexResponse"][];
     };
     SearchRequest: {
       /**
        * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
        * @example 1,2,3
        */
-      vector?: number[];
+      vector: number[];
       /**
        * @description Maximal number of neighbors to include in response
        * @default 20
        */
-      max_neighbors?: number;
+      max_neighbors: number;
       /**
        * @description This parameter specifies the index to perform the query in
        * @example xxxxxxxxxxxxxxxxxx
        */
-      field_id?: string;
+      field_name: string;
     };
-    SearchResponse: string[];
+    SearchResponse: {
+      ann?: string;
+    }[];
   };
   parameters: {
     /**
@@ -918,6 +790,11 @@ export interface components {
      * @example xxxxxxxxxxxxxxxxxx
      */
     UserId: string;
+    /**
+     * @description The ID of the machine
+     * @example xxxxxxxxxxxxxxxxxx
+     */
+    MachineId: string;
     /**
      * @description Your organization ID. You can find your organization ID in your dashboard
      * @example xxxxxxxxxxxxxxxxxx
@@ -958,7 +835,7 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": string;
+          "application/json": components["schemas"]["LoginResponse"];
         };
       };
       /** invalid parameters */
@@ -983,7 +860,7 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": string;
+          "application/json": components["schemas"]["LoginResponse"];
         };
       };
       /** invalid parameters */
@@ -1002,14 +879,19 @@ export interface operations {
       };
     };
   };
-  /** Create access and secret key for a new machine */
-  createMachine: {
-    parameters: {
-      path: {
-        /** Your organization ID. You can find your organization ID in your dashboard */
-        organization_id: components["parameters"]["OrganizationId"];
+  /** Get all machines in organization */
+  getMachines: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GetMachinesResponse"];
+        };
       };
     };
+  };
+  /** Create a new machine */
+  createMachine: {
     responses: {
       /** successful operation */
       200: {
@@ -1029,8 +911,8 @@ export interface operations {
   deleteMachine: {
     parameters: {
       path: {
-        /** Your organization ID. You can find your organization ID in your dashboard */
-        organization_id: components["parameters"]["OrganizationId"];
+        /** The ID of the machine */
+        machine_id: components["parameters"]["MachineId"];
       };
     };
     responses: {

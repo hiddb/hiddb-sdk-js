@@ -416,7 +416,7 @@ class HIDDB extends EventTarget {
     const path = "/collection" as const;
     const method = "post" as const;
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
-      collection_id: name
+      collection_name: name
     };
 
     const response = await this.axios[method]<
@@ -446,7 +446,7 @@ class HIDDB extends EventTarget {
     const method = "get" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths['/collection/{collection_name}'][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     return response.data;
@@ -457,7 +457,7 @@ class HIDDB extends EventTarget {
     const method = "delete" as const;
 
     const response = await this.axios[method]<
-      paths['/collection/{collection_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths['/collection/{collection_name}'][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`);
 
     // @ts-expect-error
@@ -467,11 +467,11 @@ class HIDDB extends EventTarget {
   }
 
   async createIndex(databaseId: string, collection_name: string, field_name: string, dimension: number) {
-    const rawPath = "/collection/{collection_id}/index" as const;
+    const rawPath = "/collection/{collection_name}/index" as const;
     const path = `/collection/${collection_name}/index` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
-      field_id: field_name,
+      field_name: field_name,
       dimension
     };
 
@@ -486,7 +486,7 @@ class HIDDB extends EventTarget {
   }
 
   async listIndices(databaseId: string, collection_name: string) {
-    const rawPath = "/collection/{collection_id}/index" as const;
+    const rawPath = "/collection/{collection_name}/index" as const;
     const path = `/collection/${collection_name}/index` as const;
     const method = "get" as const;
 
@@ -499,7 +499,7 @@ class HIDDB extends EventTarget {
 
 
   async getIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "get" as const;
 
@@ -511,7 +511,7 @@ class HIDDB extends EventTarget {
   }
 
   async deleteIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "delete" as const;
 
@@ -526,8 +526,8 @@ class HIDDB extends EventTarget {
   }
 
 
-  async insertDocument(databaseId: string, collection_name: string, document: { [key: string]: string }) {
-    const rawPath = "/collection/{collection_id}/document" as const;
+  async insertDocument(databaseId: string, collection_name: string, document: { id: string, [key: string]: string }) {
+    const rawPath = "/collection/{collection_name}/document" as const;
     const path = `/collection/${collection_name}/document` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
@@ -542,12 +542,12 @@ class HIDDB extends EventTarget {
   }
 
   async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], field_name: string, max_neighbors: number) {
-    const rawPath = "/collection/{collection_id}/document/search" as const;
+    const rawPath = "/collection/{collection_name}/document/search" as const;
     const path = `/collection/${collection_name}/document/search` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       vector: vector,
-      field_id: field_name,
+      field_name: field_name,
       max_neighbors: max_neighbors
     };
 
@@ -559,7 +559,7 @@ class HIDDB extends EventTarget {
   }
 
   async getDocument(databaseId: string, collection_name: string, id: string) {
-    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const rawPath = "/collection/{collection_name}/document/{document_id}" as const;
     const path = `/collection/${collection_name}/document/${id}` as const;
     const method = "get" as const;
 
@@ -571,7 +571,7 @@ class HIDDB extends EventTarget {
   }
 
   async deleteDocument(databaseId: string, collection_name: string, id: string) {
-    const rawPath = "/collection/{collection_id}/index/{index_id}" as const;
+    const rawPath = "/collection/{collection_name}/document/{document_id}" as const;
     const path = `/collection/${collection_name}/document/${id}` as const;
     const method = "delete" as const;
 
