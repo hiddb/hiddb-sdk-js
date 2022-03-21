@@ -300,7 +300,7 @@ class HIDDB extends EventTarget {
     const method = "get" as const;
 
     const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
+      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`/machine`);
 
     return response.data
@@ -490,7 +490,7 @@ class HIDDB extends EventTarget {
     };
 
     const response = await this.axios[method]<
-      paths[typeof rawPath][typeof method]["responses"]["200"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     // @ts-expect-error
@@ -566,7 +566,7 @@ class HIDDB extends EventTarget {
     };
 
     const response = await this.axios[method]<
-      paths[typeof rawPath][typeof method]["responses"]["200"]
+      paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
     >(`https://${databaseId}.hiddb.io${path}`, body);
 
     return response.data;
