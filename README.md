@@ -10,6 +10,19 @@ To install the SDK type
 npm install hiddb
 ```
 
+Example usage:
+
+```typescript
+import { HIDDB } from 'hiddb';
+
+async function main() {
+    const hiddb = new HIDDB();
+    await hiddb.machineLogin("<key>", "<secret>")
+
+    // ...
+}
+```
+
 We are working on examples.
 Meanwhile have a look at our [API documentation](https://docs.hiddb.com).
 
