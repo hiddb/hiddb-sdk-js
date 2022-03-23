@@ -1,5 +1,5 @@
 {
-  "name": "hiddb-sdk-js",
+  "name": "hiddb",
   "version": "0.1.1",
   "description": "",
   "source": "src/index.ts",
