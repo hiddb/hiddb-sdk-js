@@ -39,8 +39,8 @@ class State {
 
   constructor(hiddb: HIDDB, key?: string, secret?: string) {
     this.hiddb = hiddb;
-    this._key = key
-    this._secret = secret
+    this._key = key;
+    this._secret = secret;
   }
 
   get accessToken() {
@@ -63,16 +63,23 @@ class State {
 
     this._decoded = jwtDecode(accessToken) as JWT;
     if (!this._accessToken && accessToken) {
-      // @ts-expect-error
-      this.hiddb.dispatchEvent(new CustomEvent('login', {
-        detail: JSON.parse(JSON.stringify(this._decoded))
-      }));
+      if (typeof CustomEvent !== 'undefined') {
+        // @ts-expect-error
+        this.hiddb.dispatchEvent(new CustomEvent('login', {
+          detail: JSON.parse(JSON.stringify(this._decoded))
+        }));
+      }
     }
     this._accessToken = accessToken;
 
-    // try to refresh one minute before expiry
-    if (this._refresh) window.clearTimeout(this._refresh);
-    this._refresh = window.setTimeout(() => this.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
+    if (typeof window !== 'undefined') {
+      // try to refresh one minute before expiry
+      if (this._refresh) window.clearTimeout(this._refresh);
+      this._refresh = window.setTimeout(() => this.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
+    } else {
+      if (this._refresh) clearTimeout(this._refresh);
+      this._refresh = setTimeout(() => this.refreshToken(), this._decoded.exp * 1000 - Date.now() - 60000);
+    }
   }
 
   private async refreshToken() {
@@ -129,6 +136,8 @@ class HIDDB extends EventTarget {
         return Promise.reject(error);
       }
     );
+    if (key && secret)
+      this.machineLogin(key, secret);
   }
 
   public dispatchEvent<
