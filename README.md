@@ -4,7 +4,7 @@ The official SDK for the [HIDDB](https://hiddb.com) vector database.
 
 ## Installation
 
-To install the sdk type
+To install the SDK type
 
 ```bash
 npm install hiddb
