@@ -10,7 +10,7 @@ To install the sdk type
 npm install hiddb
 ```
 
-We are working on examples. 🚀
+We are working on examples.
 Meanwhile have a look at our [API documentation](https://docs.hiddb.com).
 
 ## Contributing
