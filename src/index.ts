@@ -136,8 +136,6 @@ export class HIDDB extends EventTarget {
         return Promise.reject(error);
       }
     );
-    if (key && secret)
-      this.machineLogin(key, secret);
   }
 
   public dispatchEvent<
