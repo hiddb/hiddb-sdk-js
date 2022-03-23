@@ -23,7 +23,7 @@ async function main() {
 }
 ```
 
-We are working on examples.
+🚧 We are working on more examples.
 Meanwhile have a look at our [API documentation](https://docs.hiddb.com).
 
 ## Contributing
