@@ -91,7 +91,7 @@ class State {
   }
 }
 
-class HIDDB extends EventTarget {
+export class HIDDB extends EventTarget {
   private state: State;
   private axios: AxiosInstance;
   private client: AxiosInstance;
@@ -605,5 +605,3 @@ class HIDDB extends EventTarget {
     return response.data;
   }
 }
-
-export default HIDDB;
