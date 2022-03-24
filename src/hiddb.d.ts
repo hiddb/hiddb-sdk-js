@@ -130,7 +130,7 @@ export interface paths {
   "/machine": {
     /** Get all machines in organization */
     get: operations["getMachines"];
-    /** Create a new machine */
+    /** Create a new machine account. */
     post: operations["createMachine"];
   };
   "/machine/{machine_id}": {
@@ -618,7 +618,7 @@ export interface components {
     UserRefresh: { [key: string]: unknown };
     UserVerify: {
       user_id: string;
-      otp_id: string;
+      otp: string;
     };
     UserReset: {
       /** Format: email */
@@ -626,7 +626,7 @@ export interface components {
     };
     UserUpdateReset: {
       user_id: string;
-      otp_id: string;
+      otp: string;
       /** Format: password */
       password: string;
     };
@@ -754,7 +754,7 @@ export interface components {
       /** @example xxxxxxxxxxxxxxxxxx */
       field_name: string;
       /** Format: int64 */
-      size: number;
+      n_documents: number;
       /** @enum {string} */
       distance_metric: "euclidean";
       /** Format: int64 */
@@ -765,10 +765,15 @@ export interface components {
     };
     SearchRequest: {
       /**
+       * @description Get documents close to the specified document. Provide either `ids` or `vectors`
+       * @example document1,document2,document3
+       */
+      ids?: string[];
+      /**
        * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
        * @example 1,2,3
        */
-      vector: number[];
+      vectors?: number[][];
       /**
        * @description Maximal number of neighbors to include in response
        * @default 20
@@ -781,7 +786,7 @@ export interface components {
       field_name: string;
     };
     SearchResponse: {
-      ann?: string;
+      data?: string[][];
     }[];
   };
   parameters: {
@@ -890,7 +895,7 @@ export interface operations {
       };
     };
   };
-  /** Create a new machine */
+  /** Create a new machine account. */
   createMachine: {
     responses: {
       /** successful operation */
@@ -900,7 +905,6 @@ export interface operations {
         };
       };
     };
-    /** Newly created organization. */
     requestBody: {
       content: {
         "application/json": components["schemas"]["PostMachineRequest"];

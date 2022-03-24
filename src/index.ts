@@ -187,14 +187,14 @@ export class HIDDB extends EventTarget {
     return response.data
   }
 
-  async userUpdateVerify(userId: string, otpId: string) {
+  async userUpdateVerify(userId: string, otp: string) {
     const path = "/user/update/verify" as const;
     const method = "post" as const;
 
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
     {
       user_id: userId,
-      otp_id: otpId,
+      otp: otp,
     };
 
     const response = await this.client[method]<
