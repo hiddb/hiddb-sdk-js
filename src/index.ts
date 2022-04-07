@@ -220,14 +220,14 @@ export class HIDDB extends EventTarget {
     return response.data
   }
 
-  async userUpdateResetPassword(userId: string, otpId: string, password: string) {
+  async userUpdateResetPassword(userId: string, otp: string, password: string) {
     const path = "/user/update/reset" as const;
     const method = "post" as const;
 
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
     {
       user_id: userId,
-      otp_id: otpId,
+      otp: otp,
       password
     };
 
