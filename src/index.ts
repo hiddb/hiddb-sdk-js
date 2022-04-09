@@ -387,7 +387,7 @@ export class HIDDB extends EventTarget {
     };
 
     const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof path][typeof method]["responses"]["202"]["content"]["application/json"]
     >(path, body);
 
     // @ts-expect-error
@@ -423,7 +423,7 @@ export class HIDDB extends EventTarget {
     const method = "delete" as const;
 
     const response = await this.client[method]<
-      paths['/instance/{instance_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths['/instance/{instance_id}'][typeof method]["responses"]["202"]["content"]["application/json"]
     >(path);
 
     // @ts-expect-error
@@ -567,7 +567,7 @@ export class HIDDB extends EventTarget {
     const path = `/collection/${collection_name}/document/search` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
-      vector: vector,
+      vectors: [vector],
       field_name: field_name,
       max_neighbors: max_neighbors
     };

@@ -177,6 +177,12 @@ export interface paths {
             "application/json": components["schemas"]["DatabaseResponse"];
           };
         };
+        /** successful operation */
+        202: {
+          content: {
+            "application/json": components["schemas"]["DatabaseResponse"];
+          };
+        };
       };
       /** Newly created database. */
       requestBody: {
@@ -244,7 +250,7 @@ export interface paths {
     post: {
       responses: {
         /** successful operation */
-        200: {
+        202: {
           content: {
             "application/json": components["schemas"]["InstanceResponse"];
           };
@@ -308,7 +314,7 @@ export interface paths {
       };
       responses: {
         /** successful operation */
-        200: {
+        202: {
           content: {
             "application/json": components["schemas"]["InstanceResponse"];
           };
@@ -676,7 +682,7 @@ export interface components {
       /** Format: date-time */
       deleted_at: string | null;
       /** @enum {string} */
-      status: "awake" | "asleep";
+      status: "awake" | "provisioning" | "asleep";
       /**
        * @description Instance type
        * @default s
@@ -686,7 +692,7 @@ export interface components {
       type: "xs" | "s" | "m" | "l" | "xl";
       server: {
         id: string;
-      };
+      } | null;
       /**
        * @description Size of mounted and volume in gb
        * @default 10
@@ -699,10 +705,20 @@ export interface components {
     };
     SleepAwakeInstance: {
       /** @enum {string} */
-      status: "awake" | "asleep";
+      status: "awake" | "provisioning" | "asleep";
     };
     DatabaseRequest: {
       database_name: string;
+      instances?: {
+        /** @enum {string} */
+        type: "xs" | "s" | "m" | "l" | "xl";
+        /**
+         * @description Size of mounted and volume in gb
+         * @default 10
+         * @example 100
+         */
+        volume_size: number;
+      }[];
     };
     DatabaseResponse: {
       id: string;
