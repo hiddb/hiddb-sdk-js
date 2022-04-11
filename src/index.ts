@@ -96,9 +96,9 @@ export class HIDDB extends EventTarget {
   private axios: AxiosInstance;
   private client: AxiosInstance;
 
-  constructor(key?: string, secret?: string, baseURL?: string) {
+  constructor(params: { key?: string, secret?: string, baseURL?: string }) {
     super();
-    this.state = new State(this, key, secret);
+    this.state = new State(this, params.key, params.secret);
 
     this.axios = axios.create();
     this.axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -118,7 +118,7 @@ export class HIDDB extends EventTarget {
     );
 
     this.client = axios.create({
-      baseURL: baseURL ?? "https://api.hiddb.io/",
+      baseURL: params.baseURL ?? "https://api.hiddb.io/",
       timeout: 30000,
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
