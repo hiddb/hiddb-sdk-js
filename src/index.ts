@@ -120,6 +120,7 @@ export class HIDDB extends EventTarget {
     this.client = axios.create({
       baseURL: params.baseURL ?? "https://api.hiddb.io/",
       timeout: 30000,
+      withCredentials: true
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
     this.client.interceptors.request.use(
