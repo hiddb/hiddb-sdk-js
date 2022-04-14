@@ -119,8 +119,7 @@ export class HIDDB extends EventTarget {
 
     this.client = axios.create({
       baseURL: params.baseURL ?? "https://api.hiddb.io/",
-      timeout: 30000,
-      withCredentials: true
+      timeout: 30000
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
     this.client.interceptors.request.use(
@@ -250,7 +249,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.client[method]<
       paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(path, body);
+    >(path, body, { withCredentials: true });
 
     // update accessToken
     this.state.accessToken = response.data.access_token;
@@ -262,7 +261,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.client[method]<
       paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(path, {});
+    >(path, {}, { withCredentials: true });
 
     // update accessToken
     this.state.accessToken = response.data.access_token;
