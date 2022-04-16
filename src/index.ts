@@ -324,15 +324,16 @@ export class HIDDB extends EventTarget {
     return response.data
   }
 
-  async createDatabase(name: string) {
+  async createDatabase(name: string, instances: [{ type: "xs" | "s" | "m" | "l" | "xl", volume_size: number }]) {
     const path = "/database" as const;
     const method = "post" as const;
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
-      database_name: name
+      database_name: name,
+      instances
     };
 
     const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths[typeof path][typeof method]["responses"]["202"]["content"]["application/json"]
     >(path, body);
 
     // @ts-expect-error
