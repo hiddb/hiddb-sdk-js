@@ -168,7 +168,7 @@ export class HIDDB extends EventTarget {
 
       await this.client[method]<
         paths[typeof path][typeof method]["responses"]["200"]
-      >(path, { withCredentials: true });
+      >(path, undefined, { withCredentials: true });
     }
 
     // @ts-expect-error
