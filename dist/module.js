@@ -104,7 +104,9 @@ class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
         if (!this.state.machineKey || !this.state.machineSecret) {
             const path = "/user/logout";
             const method = "post";
-            await this.client[method](path);
+            await this.client[method](path, {
+                withCredentials: true
+            });
         }
         // @ts-expect-error
         this.dispatchEvent(new Event('logout'));
