@@ -1,7 +1,5 @@
 import $hgUW1$axios from "axios";
-import $hgUW1$jscookie from "js-cookie";
 import $hgUW1$jwtdecode from "jwt-decode";
-
 
 
 
@@ -101,9 +99,13 @@ class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
     isAuthenticated() {
         return Boolean(this.state.accessToken);
     }
-    logout() {
+    async logout() {
         this.state.accessToken = undefined;
-        if (!this.state.machineKey || !this.state.machineSecret) $hgUW1$jscookie.remove('refresh_token');
+        if (!this.state.machineKey || !this.state.machineSecret) {
+            const path = "/user/logout";
+            const method = "post";
+            await this.client[method](path);
+        }
         // @ts-expect-error
         this.dispatchEvent(new Event('logout'));
     }

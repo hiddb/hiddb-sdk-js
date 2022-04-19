@@ -96,6 +96,15 @@ export interface paths {
     /** User login using access and secret token. */
     post: operations["userLogin"];
   };
+  "/user/logout": {
+    /** Log user out */
+    post: {
+      responses: {
+        /** successful operation */
+        200: unknown;
+      };
+    };
+  };
   "/user/refresh": {
     /** Refresh access token using cookie */
     post: {

@@ -1,5 +1,4 @@
 var $8zHUo$axios = require("axios");
-var $8zHUo$jscookie = require("js-cookie");
 var $8zHUo$jwtdecode = require("jwt-decode");
 
 function $parcel$interopDefault(a) {
@@ -10,7 +9,6 @@ function $parcel$export(e, n, v, s) {
 }
 
 $parcel$export(module.exports, "HIDDB", () => $882b6d93070905b3$export$5192b5e175132710);
-
 
 
 class $882b6d93070905b3$var$State {
@@ -109,9 +107,13 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
     isAuthenticated() {
         return Boolean(this.state.accessToken);
     }
-    logout() {
+    async logout() {
         this.state.accessToken = undefined;
-        if (!this.state.machineKey || !this.state.machineSecret) ($parcel$interopDefault($8zHUo$jscookie)).remove('refresh_token');
+        if (!this.state.machineKey || !this.state.machineSecret) {
+            const path = "/user/logout";
+            const method = "post";
+            await this.client[method](path);
+        }
         // @ts-expect-error
         this.dispatchEvent(new Event('logout'));
     }

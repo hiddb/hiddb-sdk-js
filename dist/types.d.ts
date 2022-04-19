@@ -47,7 +47,7 @@ export class HIDDB extends EventTarget {
     } | null): void;
     removeEventListener(type: Events['type']): void;
     isAuthenticated(): boolean;
-    logout(): void;
+    logout(): Promise<void>;
     userRegister(email: string, password: string): Promise<unknown>;
     userUpdateVerify(userId: string, otp: string): Promise<unknown>;
     userResetPassword(email: string): Promise<unknown>;

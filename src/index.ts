@@ -160,10 +160,15 @@ export class HIDDB extends EventTarget {
     return Boolean(this.state.accessToken);
   }
 
-  logout() {
+  async logout() {
     this.state.accessToken = undefined;
     if (!this.state.machineKey || !this.state.machineSecret) {
-      Cookies.remove('refresh_token');
+      const path = "/user/logout" as const;
+      const method = "post" as const;
+
+      await this.client[method]<
+        paths[typeof path][typeof method]["responses"]["200"]
+      >(path);
     }
 
     // @ts-expect-error
