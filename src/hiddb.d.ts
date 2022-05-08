@@ -289,6 +289,20 @@ export interface paths {
             "application/json": components["schemas"]["InstanceResponse"];
           };
         };
+        /** invalid parameters */
+        400: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** Awake or put instance to sleep */
@@ -306,6 +320,20 @@ export interface paths {
             "application/json": components["schemas"]["InstanceResponse"];
           };
         };
+        /** invalid parameters */
+        400: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
       requestBody: {
         content: {
@@ -328,6 +356,20 @@ export interface paths {
             "application/json": components["schemas"]["InstanceResponse"];
           };
         };
+        /** invalid parameters */
+        400: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     parameters: {
@@ -347,6 +389,14 @@ export interface paths {
             "application/json": components["schemas"]["CollectionsResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** Create new collection */
@@ -360,6 +410,12 @@ export interface paths {
         };
         /** invalid parameters */
         400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
       requestBody: {
         content: {
@@ -383,6 +439,14 @@ export interface paths {
             "application/json": components["schemas"]["CollectionResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** Delete a specific collection */
@@ -399,6 +463,14 @@ export interface paths {
             "application/json": components["schemas"]["CollectionResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
   };
@@ -418,6 +490,14 @@ export interface paths {
             "application/json": components["schemas"]["IndicesResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** Create new index in the specified collection */
@@ -435,6 +515,14 @@ export interface paths {
             "application/json": components["schemas"]["IndexResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
       requestBody: {
         content: {
@@ -469,6 +557,12 @@ export interface paths {
         };
         /** invalid parameters */
         400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** Delete index */
@@ -490,6 +584,12 @@ export interface paths {
         };
         /** invalid parameters */
         400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     parameters: {
@@ -513,6 +613,14 @@ export interface paths {
       responses: {
         /** Insertion successful */
         200: unknown;
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
       requestBody: {
         content: {
@@ -543,6 +651,14 @@ export interface paths {
             "application/json": components["schemas"]["SearchResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
       requestBody: {
         content: {
@@ -575,6 +691,14 @@ export interface paths {
             "application/json": components["schemas"]["DocumentResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     /** This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated */
@@ -594,6 +718,14 @@ export interface paths {
             "application/json": components["schemas"]["DocumentResponse"];
           };
         };
+        /** invalid parameters */
+        400: unknown;
+        /** invalid input */
+        401: unknown;
+        /** unauthorized */
+        403: unknown;
+        /** forbidden */
+        405: unknown;
       };
     };
     parameters: {
@@ -691,7 +823,7 @@ export interface components {
       /** Format: date-time */
       deleted_at: string | null;
       /** @enum {string} */
-      status: "awake" | "provisioning" | "asleep";
+      status: "awake" | "provisioning" | "wakingup" | "asleep";
       /**
        * @description Instance type
        * @default s
@@ -714,7 +846,7 @@ export interface components {
     };
     SleepAwakeInstance: {
       /** @enum {string} */
-      status: "awake" | "provisioning" | "asleep";
+      status: "awake" | "provisioning" | "wakingup" | "asleep";
     };
     DatabaseRequest: {
       database_name: string;

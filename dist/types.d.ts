@@ -86,7 +86,7 @@ export class HIDDB extends EventTarget {
             id: string;
             created_at: string;
             deleted_at: string;
-            status: "awake" | "provisioning" | "asleep";
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
                 id: string;
@@ -105,7 +105,7 @@ export class HIDDB extends EventTarget {
                 id: string;
                 created_at: string;
                 deleted_at: string;
-                status: "awake" | "provisioning" | "asleep";
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
                 type: "s" | "xs" | "m" | "l" | "xl";
                 server: {
                     id: string;
@@ -124,7 +124,7 @@ export class HIDDB extends EventTarget {
             id: string;
             created_at: string;
             deleted_at: string;
-            status: "awake" | "provisioning" | "asleep";
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
                 id: string;
@@ -142,7 +142,7 @@ export class HIDDB extends EventTarget {
             id: string;
             created_at: string;
             deleted_at: string;
-            status: "awake" | "provisioning" | "asleep";
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
                 id: string;
@@ -154,7 +154,7 @@ export class HIDDB extends EventTarget {
         id: string;
         created_at: string;
         deleted_at: string;
-        status: "awake" | "provisioning" | "asleep";
+        status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
             id: string;
@@ -166,7 +166,7 @@ export class HIDDB extends EventTarget {
             id: string;
             created_at: string;
             deleted_at: string;
-            status: "awake" | "provisioning" | "asleep";
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
                 id: string;
@@ -178,7 +178,7 @@ export class HIDDB extends EventTarget {
         id: string;
         created_at: string;
         deleted_at: string;
-        status: "awake" | "provisioning" | "asleep";
+        status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
             id: string;
@@ -189,7 +189,7 @@ export class HIDDB extends EventTarget {
         id: string;
         created_at: string;
         deleted_at: string;
-        status: "awake" | "provisioning" | "asleep";
+        status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
             id: string;
