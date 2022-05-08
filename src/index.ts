@@ -95,8 +95,9 @@ export class HIDDB extends EventTarget {
   private state: State;
   private axios: AxiosInstance;
   private client: AxiosInstance;
+  private dbDomain: string;
 
-  constructor(params: { key?: string, secret?: string, baseURL?: string }) {
+  constructor(params: { key?: string, secret?: string, apiDomain?: string, dbDomain?: string, secure?: boolean}) {
     super();
     this.state = new State(this, params.key, params.secret);
 
@@ -117,8 +118,9 @@ export class HIDDB extends EventTarget {
       }
     );
 
+    this.dbDomain = params.dbDomain;
     this.client = axios.create({
-      baseURL: params.baseURL ?? "https://api.hiddb.io/",
+      baseURL: `${params.secure ? 'https' : 'http' }://api.${params.apiDomain}`,
       timeout: 30000
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
@@ -374,7 +376,7 @@ export class HIDDB extends EventTarget {
     const method = "delete" as const;
 
     const response = await this.client[method]<
-      paths['/database/{database_id}'][typeof method]["responses"]["200"]["content"]["application/json"]
+      paths['/database/{database_id}'][typeof method]["responses"]["202"]["content"]["application/json"]
     >(path);
 
     // @ts-expect-error
@@ -448,7 +450,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`, body);
+    >(`https://${databaseId}.${this.dbDomain}${path}`, body);
 
     // @ts-expect-error
     this.dispatchEvent(new Event('collectionCreated'));
@@ -462,7 +464,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }
@@ -474,7 +476,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths['/collection/{collection_name}'][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }
@@ -485,7 +487,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths['/collection/{collection_name}'][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     // @ts-expect-error
     this.dispatchEvent(new Event('collectionDeleted'));
@@ -504,7 +506,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`, body);
+    >(`https://${databaseId}.${this.dbDomain}${path}`, body);
 
     // @ts-expect-error
     this.dispatchEvent(new Event('indexCreated'));
@@ -519,7 +521,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }
@@ -532,7 +534,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }
@@ -544,7 +546,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     // @ts-expect-error
     this.dispatchEvent(new Event('indexDeleted'));
@@ -563,7 +565,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]
-    >(`https://${databaseId}.hiddb.io${path}`, body);
+    >(`https://${databaseId}.${this.dbDomain}${path}`, body);
 
     return response.data;
   }
@@ -580,7 +582,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`, body);
+    >(`https://${databaseId}.${this.dbDomain}${path}`, body);
 
     return response.data;
   }
@@ -592,7 +594,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }
@@ -604,7 +606,7 @@ export class HIDDB extends EventTarget {
 
     const response = await this.axios[method]<
       paths[typeof rawPath][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(`https://${databaseId}.hiddb.io${path}`);
+    >(`https://${databaseId}.${this.dbDomain}${path}`);
 
     return response.data;
   }

@@ -229,7 +229,7 @@ export interface paths {
       };
       responses: {
         /** successful operation */
-        200: {
+        202: {
           content: {
             "application/json": components["schemas"]["DatabaseResponse"];
           };

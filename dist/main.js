@@ -77,8 +77,9 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         }, (error)=>{
             return Promise.reject(error);
         });
+        this.dbDomain = params.dbDomain;
         this.client = ($parcel$interopDefault($8zHUo$axios)).create({
-            baseURL: params.baseURL ?? "https://api.hiddb.io/",
+            baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain}`,
             timeout: 30000
         });
         this.client.defaults.headers.post['Content-Type'] = 'application/json';
@@ -286,7 +287,7 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         const body = {
             collection_name: name
         };
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`, body);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
         // @ts-expect-error
         this.dispatchEvent(new Event('collectionCreated'));
         return response.data;
@@ -294,19 +295,19 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
     async listCollections(databaseId) {
         const path = "/collection";
         const method = "get";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async getCollection(databaseId, name) {
         const path = `/collection/${name}`;
         const method = "get";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async deleteCollection(databaseId, name) {
         const path = `/collection/${name}`;
         const method = "delete";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         // @ts-expect-error
         this.dispatchEvent(new Event('collectionDeleted'));
         return response.data;
@@ -319,7 +320,7 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
             field_name: field_name,
             dimension: dimension
         };
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`, body);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
         // @ts-expect-error
         this.dispatchEvent(new Event('indexCreated'));
         return response.data;
@@ -328,21 +329,21 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         const rawPath = "/collection/{collection_name}/index";
         const path = `/collection/${collection_name}/index`;
         const method = "get";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async getIndex(databaseId, collection_name, index_name) {
         const rawPath = "/collection/{collection_name}/index/{field_name}";
         const path = `/collection/${collection_name}/index/${index_name}`;
         const method = "get";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async deleteIndex(databaseId, collection_name, index_name) {
         const rawPath = "/collection/{collection_name}/index/{field_name}";
         const path = `/collection/${collection_name}/index/${index_name}`;
         const method = "delete";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         // @ts-expect-error
         this.dispatchEvent(new Event('indexDeleted'));
         return response.data;
@@ -356,7 +357,7 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
                 document
             ]
         };
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`, body);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
         return response.data;
     }
     async searchNearestDocuments(databaseId, collection_name, vector, field_name, max_neighbors) {
@@ -370,21 +371,21 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
             field_name: field_name,
             max_neighbors: max_neighbors
         };
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`, body);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
         return response.data;
     }
     async getDocument(databaseId, collection_name, id) {
         const rawPath = "/collection/{collection_name}/document/{document_id}";
         const path = `/collection/${collection_name}/document/${id}`;
         const method = "get";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async deleteDocument(databaseId, collection_name, id) {
         const rawPath = "/collection/{collection_name}/document/{document_id}";
         const path = `/collection/${collection_name}/document/${id}`;
         const method = "delete";
-        const response = await this.axios[method](`https://${databaseId}.hiddb.io${path}`);
+        const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
 }

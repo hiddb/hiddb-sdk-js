@@ -35,7 +35,9 @@ export class HIDDB extends EventTarget {
     constructor(params: {
         key?: string;
         secret?: string;
-        baseURL?: string;
+        apiDomain?: string;
+        dbDomain?: string;
+        secure?: boolean;
     });
     dispatchEvent<T extends Events['type'], E extends Events & {
         type: T;
