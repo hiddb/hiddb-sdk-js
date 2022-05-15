@@ -8,11 +8,15 @@ function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
 
+$parcel$export(module.exports, "State", () => $882b6d93070905b3$export$7254cc27399e90bd);
 $parcel$export(module.exports, "HIDDB", () => $882b6d93070905b3$export$5192b5e175132710);
 
 
-class $882b6d93070905b3$var$State {
+class $882b6d93070905b3$export$7254cc27399e90bd {
+}
+class $882b6d93070905b3$var$MachineState extends $882b6d93070905b3$export$7254cc27399e90bd {
     constructor(hiddb, key, secret){
+        super();
         this._accessToken = '';
         this.hiddb = hiddb;
         this._key = key;
@@ -52,16 +56,13 @@ class $882b6d93070905b3$var$State {
         }
     }
     async refreshToken() {
-        if (this.machineKey && this.machineSecret) {
-            await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
-            return;
-        }
+        await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
     }
 }
 class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
     constructor(params){
         super();
-        this.state = new $882b6d93070905b3$var$State(this, params.key, params.secret);
+        this.state = new $882b6d93070905b3$var$MachineState(this, params.key, params.secret);
         this.axios = ($parcel$interopDefault($8zHUo$axios)).create();
         this.axios.defaults.headers.post['Content-Type'] = 'application/json';
         this.axios.interceptors.request.use((config)=>{

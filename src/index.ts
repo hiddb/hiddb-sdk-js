@@ -2,7 +2,16 @@ import axios, { AxiosInstance } from "axios";
 import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
-type JWT = {
+export abstract class State {
+  abstract get accessToken(): string;
+  abstract get machineKey(): string;
+  abstract get machineSecret(): string;
+
+  abstract set accessToken(accessToken);
+  protected abstract refreshToken(): Promise<void>;
+}
+
+export type JWT = {
   sub: string,
   amr: [string],  // possible values: password, refresh_token, otp
   scope: string,
@@ -27,7 +36,7 @@ type Events =
   ({ type: 'indexCreated' } & Event) |
   ({ type: 'indexDeleted' } & Event);
 
-class State {
+class MachineState extends State {
   private hiddb: HIDDB;
   private _accessToken?: string = '';
   private _decoded?: JWT;
@@ -36,7 +45,8 @@ class State {
   private _key?: string;
   private _secret?: string;
 
-  constructor(hiddb: HIDDB, key?: string, secret?: string) {
+  constructor(hiddb: HIDDB, key: string, secret: string) {
+    super();
     this.hiddb = hiddb;
     this._key = key;
     this._secret = secret;
@@ -81,23 +91,20 @@ class State {
     }
   }
 
-  private async refreshToken() {
-    if (this.machineKey && this.machineSecret) {
-      await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
-      return;
-    }
+  protected async refreshToken() {
+    await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
   }
 }
 
 export class HIDDB extends EventTarget {
-  public state: State;
-  private axios: AxiosInstance;
-  private client: AxiosInstance;
-  private dbDomain: string;
+  protected state: State;
+  protected axios: AxiosInstance;
+  protected client: AxiosInstance;
+  protected dbDomain: string;
 
-  constructor(params: { key?: string, secret?: string, apiDomain?: string, dbDomain?: string, secure?: boolean }) {
+  constructor(params: { key: string, secret: string, apiDomain?: string, dbDomain?: string, secure?: boolean }) {
     super();
-    this.state = new State(this, params.key, params.secret);
+    this.state = new MachineState(this, params.key, params.secret);
 
     this.axios = axios.create();
     this.axios.defaults.headers.post['Content-Type'] = 'application/json';

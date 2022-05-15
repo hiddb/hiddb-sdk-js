@@ -3,8 +3,11 @@ import $hgUW1$jwtdecode from "jwt-decode";
 
 
 
-class $149c1bd638913645$var$State {
+class $149c1bd638913645$export$7254cc27399e90bd {
+}
+class $149c1bd638913645$var$MachineState extends $149c1bd638913645$export$7254cc27399e90bd {
     constructor(hiddb, key, secret){
+        super();
         this._accessToken = '';
         this.hiddb = hiddb;
         this._key = key;
@@ -44,16 +47,13 @@ class $149c1bd638913645$var$State {
         }
     }
     async refreshToken() {
-        if (this.machineKey && this.machineSecret) {
-            await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
-            return;
-        }
+        await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
     }
 }
 class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
     constructor(params){
         super();
-        this.state = new $149c1bd638913645$var$State(this, params.key, params.secret);
+        this.state = new $149c1bd638913645$var$MachineState(this, params.key, params.secret);
         this.axios = $hgUW1$axios.create();
         this.axios.defaults.headers.post['Content-Type'] = 'application/json';
         this.axios.interceptors.request.use((config)=>{
@@ -307,5 +307,5 @@ class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
 }
 
 
-export {$149c1bd638913645$export$5192b5e175132710 as HIDDB};
+export {$149c1bd638913645$export$7254cc27399e90bd as State, $149c1bd638913645$export$5192b5e175132710 as HIDDB};
 //# sourceMappingURL=module.js.map

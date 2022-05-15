@@ -1,4 +1,12 @@
-type JWT = {
+import { AxiosInstance } from "axios";
+export abstract class State {
+    abstract get accessToken(): string;
+    abstract get machineKey(): string;
+    abstract get machineSecret(): string;
+    abstract set accessToken(accessToken: string);
+    protected abstract refreshToken(): Promise<void>;
+}
+export type JWT = {
     sub: string;
     amr: [string];
     scope: string;
@@ -31,18 +39,14 @@ type Events = ({
 } & Event) | ({
     type: 'indexDeleted';
 } & Event);
-declare class State {
-    constructor(hiddb: HIDDB, key?: string, secret?: string);
-    get accessToken(): string;
-    get machineKey(): string;
-    get machineSecret(): string;
-    set accessToken(accessToken: string);
-}
 export class HIDDB extends EventTarget {
-    state: State;
+    protected state: State;
+    protected axios: AxiosInstance;
+    protected client: AxiosInstance;
+    protected dbDomain: string;
     constructor(params: {
-        key?: string;
-        secret?: string;
+        key: string;
+        secret: string;
         apiDomain?: string;
         dbDomain?: string;
         secure?: boolean;
