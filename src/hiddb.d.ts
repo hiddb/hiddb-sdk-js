@@ -4,134 +4,6 @@
  */
 
 export interface paths {
-  "/user/register": {
-    /** Register user. Email containing URL with OTP is send out to user. */
-    post: {
-      responses: {
-        /** successful operation */
-        200: unknown;
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserRegister"];
-        };
-      };
-    };
-  };
-  "/user/update/verify": {
-    /** Verify email adress provided by the user. */
-    post: {
-      responses: {
-        /** successful operation */
-        200: unknown;
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserVerify"];
-        };
-      };
-    };
-  };
-  "/user/reset": {
-    /** Send URL containing OTP to email adress provided by user to reset password. */
-    post: {
-      responses: {
-        /** successful operation */
-        200: unknown;
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserReset"];
-        };
-      };
-    };
-  };
-  "/user/update/reset": {
-    /** Reset password as requested by the user. */
-    post: {
-      responses: {
-        /** successful operation */
-        200: unknown;
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserUpdateReset"];
-        };
-      };
-    };
-  };
-  "/user/login": {
-    /** User login using access and secret token. */
-    post: operations["userLogin"];
-  };
-  "/user/logout": {
-    /** Log user out */
-    post: {
-      responses: {
-        /** successful operation */
-        200: unknown;
-      };
-    };
-  };
-  "/user/refresh": {
-    /** Refresh access token using cookie */
-    post: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["LoginResponse"];
-          };
-        };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
-      };
-      /** Exchange access and secret token for JSON web token (JWT). */
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserRefresh"];
-        };
-      };
-    };
-  };
   "/machine/login": {
     /** Machine login using access and secret token. */
     post: operations["machineLogin"];
@@ -148,20 +20,7 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the machine */
-        machine_id: components["parameters"]["MachineId"];
-      };
-    };
-  };
-  "/health": {
-    /** Check access to databases */
-    get: {
-      responses: {
-        /** successfull operation */
-        200: {
-          content: {
-            "text/plain": "Ok";
-          };
-        };
+        machine_id: string;
       };
     };
   };
@@ -172,7 +31,56 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["DatabasesResponse"];
+            "application/json": {
+              databases?: {
+                id?: string;
+                database_name?: string;
+                /** @example xxxxxxxxxxxxxxxxxx */
+                organization_id?: string;
+                /** Format: date-time */
+                created_at?: string;
+                /** Format: date-time */
+                deleted_at?: string | null;
+                instances?: {
+                  id?: string;
+                  /** Format: date-time */
+                  created_at?: string;
+                  /** Format: date-time */
+                  deleted_at?: string | null;
+                  /** @enum {string} */
+                  status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                  /**
+                   * @description Instance type
+                   * @default s
+                   * @example s
+                   * @enum {string}
+                   */
+                  type?: "xs" | "s" | "m" | "l" | "xl";
+                  server?: {
+                    id?: string;
+                  } | null;
+                  /**
+                   * @description Size of mounted and volume in gb
+                   * @default 10
+                   * @example 100
+                   */
+                  volume_size?: number;
+                  /**
+                   * @description Physical instance location
+                   * @enum {string}
+                   */
+                  location?: "hel1" | "nbg1" | "fsn1";
+                }[];
+              }[];
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
@@ -181,22 +89,77 @@ export interface paths {
     post: {
       responses: {
         /** successful operation */
-        200: {
-          content: {
-            "application/json": components["schemas"]["DatabaseResponse"];
-          };
-        };
-        /** successful operation */
         202: {
           content: {
-            "application/json": components["schemas"]["DatabaseResponse"];
+            "application/json": {
+              id?: string;
+              database_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              organization_id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              instances?: {
+                id?: string;
+                /** Format: date-time */
+                created_at?: string;
+                /** Format: date-time */
+                deleted_at?: string | null;
+                /** @enum {string} */
+                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                /**
+                 * @description Instance type
+                 * @default s
+                 * @example s
+                 * @enum {string}
+                 */
+                type?: "xs" | "s" | "m" | "l" | "xl";
+                server?: {
+                  id?: string;
+                } | null;
+                /**
+                 * @description Size of mounted and volume in gb
+                 * @default 10
+                 * @example 100
+                 */
+                volume_size?: number;
+                /**
+                 * @description Physical instance location
+                 * @enum {string}
+                 */
+                location?: "hel1" | "nbg1" | "fsn1";
+              }[];
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
       /** Newly created database. */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["DatabaseRequest"];
+          "application/json": {
+            database_name: string;
+            instances?: {
+              /** @enum {string} */
+              location?: "hel1" | "nbg1" | "fsn1";
+              /** @enum {string} */
+              type?: "xs" | "s" | "m" | "l" | "xl";
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size?: number;
+            }[];
+          };
         };
       };
     };
@@ -207,14 +170,61 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the database */
-          database_id: components["parameters"]["DatabaseId"];
+          database_id: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["DatabaseResponse"];
+            "application/json": {
+              id?: string;
+              database_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              organization_id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              instances?: {
+                id?: string;
+                /** Format: date-time */
+                created_at?: string;
+                /** Format: date-time */
+                deleted_at?: string | null;
+                /** @enum {string} */
+                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                /**
+                 * @description Instance type
+                 * @default s
+                 * @example s
+                 * @enum {string}
+                 */
+                type?: "xs" | "s" | "m" | "l" | "xl";
+                server?: {
+                  id?: string;
+                } | null;
+                /**
+                 * @description Size of mounted and volume in gb
+                 * @default 10
+                 * @example 100
+                 */
+                volume_size?: number;
+                /**
+                 * @description Physical instance location
+                 * @enum {string}
+                 */
+                location?: "hel1" | "nbg1" | "fsn1";
+              }[];
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
@@ -224,14 +234,61 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the database */
-          database_id: components["parameters"]["DatabaseId"];
+          database_id: string;
         };
       };
       responses: {
         /** successful operation */
         202: {
           content: {
-            "application/json": components["schemas"]["DatabaseResponse"];
+            "application/json": {
+              id?: string;
+              database_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              organization_id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              instances?: {
+                id?: string;
+                /** Format: date-time */
+                created_at?: string;
+                /** Format: date-time */
+                deleted_at?: string | null;
+                /** @enum {string} */
+                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                /**
+                 * @description Instance type
+                 * @default s
+                 * @example s
+                 * @enum {string}
+                 */
+                type?: "xs" | "s" | "m" | "l" | "xl";
+                server?: {
+                  id?: string;
+                } | null;
+                /**
+                 * @description Size of mounted and volume in gb
+                 * @default 10
+                 * @example 100
+                 */
+                volume_size?: number;
+                /**
+                 * @description Physical instance location
+                 * @enum {string}
+                 */
+                location?: "hel1" | "nbg1" | "fsn1";
+              }[];
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
@@ -239,7 +296,7 @@ export interface paths {
     parameters: {
       path: {
         /** The ID of the database */
-        database_id: components["parameters"]["DatabaseId"];
+        database_id: string;
       };
     };
   };
@@ -250,7 +307,46 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["InstancesResponse"];
+            "application/json": {
+              instances: {
+                id?: string;
+                /** Format: date-time */
+                created_at?: string;
+                /** Format: date-time */
+                deleted_at?: string | null;
+                /** @enum {string} */
+                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                /**
+                 * @description Instance type
+                 * @default s
+                 * @example s
+                 * @enum {string}
+                 */
+                type?: "xs" | "s" | "m" | "l" | "xl";
+                server?: {
+                  id?: string;
+                } | null;
+                /**
+                 * @description Size of mounted and volume in gb
+                 * @default 10
+                 * @example 100
+                 */
+                volume_size?: number;
+                /**
+                 * @description Physical instance location
+                 * @enum {string}
+                 */
+                location?: "hel1" | "nbg1" | "fsn1";
+              }[];
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
@@ -261,14 +357,72 @@ export interface paths {
         /** successful operation */
         202: {
           content: {
-            "application/json": components["schemas"]["InstanceResponse"];
+            "application/json": {
+              id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              /** @enum {string} */
+              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type?: "xs" | "s" | "m" | "l" | "xl";
+              server?: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size?: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location?: "hel1" | "nbg1" | "fsn1";
+            };
+          };
+        };
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
           };
         };
       };
       /** Newly created Instance. */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["InstanceRequest"];
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            database_id: string;
+            /**
+             * @description Instance type
+             * @default s
+             * @example s
+             * @enum {string}
+             */
+            type?: "xs" | "s" | "m" | "l" | "xl";
+            /**
+             * @description Size of mounted and volume in gb
+             * @default 10
+             * @example 100
+             */
+            volume_size?: number;
+            /**
+             * @description Physical instance location
+             * @enum {string}
+             */
+            location?: "hel1" | "nbg1" | "fsn1";
+          };
         };
       };
     };
@@ -279,30 +433,53 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the instance */
-          instance_id: components["parameters"]["InstanceId"];
+          instance_id: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["InstanceResponse"];
+            "application/json": {
+              id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              /** @enum {string} */
+              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type?: "xs" | "s" | "m" | "l" | "xl";
+              server?: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size?: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location?: "hel1" | "nbg1" | "fsn1";
+            };
           };
         };
-        /** invalid parameters */
-        400: {
+        /** error */
+        default: {
           content: {
             "application/json": {
               error?: string;
             };
           };
         };
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
       };
     };
     /** Awake or put instance to sleep */
@@ -310,34 +487,60 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the instance */
-          instance_id: components["parameters"]["InstanceId"];
+          instance_id: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["InstanceResponse"];
+            "application/json": {
+              id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              /** @enum {string} */
+              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type?: "xs" | "s" | "m" | "l" | "xl";
+              server?: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size?: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location?: "hel1" | "nbg1" | "fsn1";
+            };
           };
         };
-        /** invalid parameters */
-        400: {
+        /** error */
+        default: {
           content: {
             "application/json": {
               error?: string;
             };
           };
         };
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
       };
       requestBody: {
         content: {
-          "application/json": components["schemas"]["SleepAwakeInstance"];
+          "application/json": {
+            /** @enum {string} */
+            status: "awake" | "asleep";
+          };
         };
       };
     };
@@ -346,36 +549,59 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the instance */
-          instance_id: components["parameters"]["InstanceId"];
+          instance_id: string;
         };
       };
       responses: {
         /** successful operation */
         202: {
           content: {
-            "application/json": components["schemas"]["InstanceResponse"];
+            "application/json": {
+              id?: string;
+              /** Format: date-time */
+              created_at?: string;
+              /** Format: date-time */
+              deleted_at?: string | null;
+              /** @enum {string} */
+              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type?: "xs" | "s" | "m" | "l" | "xl";
+              server?: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size?: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location?: "hel1" | "nbg1" | "fsn1";
+            };
           };
         };
-        /** invalid parameters */
-        400: {
+        /** error */
+        default: {
           content: {
             "application/json": {
               error?: string;
             };
           };
         };
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
       };
     };
     parameters: {
       path: {
         /** The ID of the instance */
-        instance_id: components["parameters"]["InstanceId"];
+        instance_id: string;
       };
     };
   };
@@ -386,17 +612,22 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["CollectionsResponse"];
+            "application/json": {
+              collections?: {
+                /** @example xxxxxxxxxxxxxxxxxx */
+                collection_name?: string;
+              }[];
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     /** Create new collection */
@@ -405,21 +636,27 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["CollectionResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
       requestBody: {
         content: {
-          "application/json": components["schemas"]["CollectionRequest"];
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+          };
         };
       };
     };
@@ -436,17 +673,20 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["CollectionResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     /** Delete a specific collection */
@@ -460,17 +700,20 @@ export interface paths {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["CollectionResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
   };
@@ -480,24 +723,37 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["IndicesResponse"];
+            "application/json": {
+              indices?: {
+                /** @example xxxxxxxxxxxxxxxxxx */
+                collection_name?: string;
+                /** @example xxxxxxxxxxxxxxxxxx */
+                field_name?: string;
+                /** Format: int64 */
+                n_documents?: number;
+                /** @enum {string} */
+                distance_metric?: "euclidean";
+                /** Format: int64 */
+                dimension?: number;
+              }[];
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     /** Create new index in the specified collection */
@@ -505,35 +761,51 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["IndexResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              field_name?: string;
+              /** Format: int64 */
+              n_documents?: number;
+              /** @enum {string} */
+              distance_metric?: "euclidean";
+              /** Format: int64 */
+              dimension?: number;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
       requestBody: {
         content: {
-          "application/json": components["schemas"]["IndexRequest"];
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            field_name: string;
+            /** Format: int64 */
+            dimension: number;
+          };
         };
       };
     };
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_name: components["parameters"]["CollectionId"];
+        collection_name: string;
       };
     };
   };
@@ -543,26 +815,37 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
           /** The ID of the index */
-          field_name: components["parameters"]["IndexId"];
+          field_name: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["IndexResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              field_name?: string;
+              /** Format: int64 */
+              n_documents?: number;
+              /** @enum {string} */
+              distance_metric?: "euclidean";
+              /** Format: int64 */
+              dimension?: number;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     /** Delete index */
@@ -570,34 +853,45 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
           /** The ID of the index */
-          field_name: components["parameters"]["IndexId"];
+          field_name: string;
         };
       };
       responses: {
         /** successful operation */
         200: {
           content: {
-            "application/json": components["schemas"]["IndexResponse"];
+            "application/json": {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name?: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              field_name?: string;
+              /** Format: int64 */
+              n_documents?: number;
+              /** @enum {string} */
+              distance_metric?: "euclidean";
+              /** Format: int64 */
+              dimension?: number;
+            };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_name: components["parameters"]["CollectionId"];
+        collection_name: string;
         /** The ID of the index */
-        field_name: components["parameters"]["IndexId"];
+        field_name: string;
       };
     };
   };
@@ -607,31 +901,37 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
         };
       };
       responses: {
         /** Insertion successful */
         200: unknown;
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
       requestBody: {
         content: {
-          "application/json": components["schemas"]["DocumentRequest"];
+          "application/json": {
+            documents: ({
+              id: string;
+              /** @example 1,2,3 */
+              field?: number[];
+            } & { [key: string]: unknown })[];
+          };
         };
       };
     };
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_name: components["parameters"]["CollectionId"];
+        collection_name: string;
       };
     };
   };
@@ -641,35 +941,58 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
         };
       };
       responses: {
         /** Insertion successful */
         200: {
           content: {
-            "application/json": components["schemas"]["SearchResponse"];
+            "application/json": {
+              data?: string[][];
+            }[];
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
       requestBody: {
         content: {
-          "application/json": components["schemas"]["SearchRequest"];
+          "application/json": {
+            /**
+             * @description Get documents close to the specified document. Provide either `ids` or `vectors`
+             * @example document1,document2,document3
+             */
+            ids?: string[];
+            /**
+             * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+             * @example 1,2,3
+             */
+            vectors?: number[][];
+            /**
+             * @description Maximal number of neighbors to include in response
+             * @default 20
+             */
+            max_neighbors: number;
+            /**
+             * @description This parameter specifies the index to perform the query in
+             * @example xxxxxxxxxxxxxxxxxx
+             */
+            field_name: string;
+          };
         };
       };
     };
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_name: components["parameters"]["CollectionId"];
+        collection_name: string;
       };
     };
   };
@@ -679,365 +1002,106 @@ export interface paths {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
           /** The ID of the index */
-          document_id: components["parameters"]["DocumentId"];
+          document_id: string;
         };
       };
       responses: {
         /** Insertion successful */
         200: {
           content: {
-            "application/json": components["schemas"]["DocumentResponse"];
+            "application/json": {
+              id?: string;
+              /** @example 1,2,3 */
+              field?: number[];
+            } & { [key: string]: unknown };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
-    /** This feature is not available yet but coming soon! Remove document by ID. The corresponding indices will be updated */
+    /** COMING SOON! Remove document by ID. The corresponding indices will be updated */
     delete: {
       parameters: {
         path: {
           /** The ID of the collection */
-          collection_name: components["parameters"]["CollectionId"];
+          collection_name: string;
           /** The ID of the index */
-          document_id: components["parameters"]["DocumentId"];
+          document_id: string;
         };
       };
       responses: {
         /** Insertion successful */
         200: {
           content: {
-            "application/json": components["schemas"]["DocumentResponse"];
+            "application/json": {
+              id?: string;
+              /** @example 1,2,3 */
+              field?: number[];
+            } & { [key: string]: unknown };
           };
         };
-        /** invalid parameters */
-        400: unknown;
-        /** invalid input */
-        401: unknown;
-        /** unauthorized */
-        403: unknown;
-        /** forbidden */
-        405: unknown;
+        /** error */
+        default: {
+          content: {
+            "application/json": {
+              error?: string;
+            };
+          };
+        };
       };
     };
     parameters: {
       path: {
         /** The ID of the collection */
-        collection_name: components["parameters"]["CollectionId"];
+        collection_name: string;
         /** The ID of the index */
-        document_id: components["parameters"]["DocumentId"];
+        document_id: string;
       };
     };
   };
 }
 
-export interface components {
-  schemas: {
-    LoginResponse: {
-      access_token: string;
-      /** @enum {string} */
-      type: "Bearer";
-    };
-    MachineLogin: {
-      access_key: string;
-      secret_key: string;
-    };
-    UserLogin: {
-      /** Format: email */
-      email: string;
-      /** Format: password */
-      password: string;
-    };
-    UserRegister: {
-      /** Format: email */
-      email: string;
-      /** Format: password */
-      password: string;
-    };
-    UserRefresh: { [key: string]: unknown };
-    UserVerify: {
-      user_id: string;
-      otp: string;
-    };
-    UserReset: {
-      /** Format: email */
-      email: string;
-    };
-    UserUpdateReset: {
-      user_id: string;
-      otp: string;
-      /** Format: password */
-      password: string;
-    };
-    PostMachineRequest: {
-      machine_name: string;
-      /** @enum {string} */
-      permission: "write" | "read" | "admin";
-    };
-    PostMachineResponse: {
-      machine_name: string;
-      id: string;
-      key: string;
-      secret: string;
-      /** @enum {string} */
-      permission: "write" | "read" | "admin";
-    };
-    GetMachinesResponse: {
-      machines?: {
-        machine_name: string;
-        id: string;
-        key: string;
-        /** @enum {string} */
-        permission: "write" | "read" | "admin";
-      }[];
-    };
-    InstanceRequest: {
-      /** @example xxxxxxxxxxxxxxxxxx */
-      database_id: string;
-      /**
-       * @description Instance type
-       * @default s
-       * @example s
-       * @enum {string}
-       */
-      type: "xs" | "s" | "m" | "l" | "xl";
-      /**
-       * @description Size of mounted and volume in gb
-       * @default 10
-       * @example 100
-       */
-      volume_size: number;
-    };
-    InstanceResponse: {
-      id: string;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      deleted_at: string | null;
-      /** @enum {string} */
-      status: "awake" | "provisioning" | "wakingup" | "asleep";
-      /**
-       * @description Instance type
-       * @default s
-       * @example s
-       * @enum {string}
-       */
-      type: "xs" | "s" | "m" | "l" | "xl";
-      server: {
-        id: string;
-      } | null;
-      /**
-       * @description Size of mounted and volume in gb
-       * @default 10
-       * @example 100
-       */
-      volume_size: number;
-    };
-    InstancesResponse: {
-      instances: components["schemas"]["InstanceResponse"][];
-    };
-    SleepAwakeInstance: {
-      /** @enum {string} */
-      status: "awake" | "provisioning" | "wakingup" | "asleep";
-    };
-    DatabaseRequest: {
-      database_name: string;
-      instances?: {
-        /** @enum {string} */
-        type: "xs" | "s" | "m" | "l" | "xl";
-        /**
-         * @description Size of mounted and volume in gb
-         * @default 10
-         * @example 100
-         */
-        volume_size: number;
-      }[];
-    };
-    DatabaseResponse: {
-      id: string;
-      database_name: string;
-      /** @example xxxxxxxxxxxxxxxxxx */
-      organization_id: string;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      deleted_at: string | null;
-      instances: components["schemas"]["InstanceResponse"][];
-    };
-    DatabasesResponse: {
-      databases: components["schemas"]["DatabaseResponse"][];
-    };
-    /** @description Collection details */
-    CollectionRequest: {
-      /** @example xxxxxxxxxxxxxxxxxx */
-      collection_name: string;
-    };
-    CollectionsResponse: {
-      collections: components["schemas"]["CollectionResponse"][];
-    };
-    CollectionResponse: {
-      /** @example xxxxxxxxxxxxxxxxxx */
-      collection_name: string;
-    };
-    IndexRequest: {
-      /** @example xxxxxxxxxxxxxxxxxx */
-      field_name: string;
-      /** Format: int64 */
-      dimension: number;
-    };
-    DocumentRequest: {
-      documents: {
-        id: string;
-        /** @example 1,2,3 */
-        field?: number[];
-      }[];
-    } & { [key: string]: unknown };
-    DocumentResponse: {
-      id: string;
-      /** @example 1,2,3 */
-      field?: number[];
-    } & { [key: string]: unknown };
-    IndexResponse: {
-      /** @example xxxxxxxxxxxxxxxxxx */
-      collection_name: string;
-      /** @example xxxxxxxxxxxxxxxxxx */
-      field_name: string;
-      /** Format: int64 */
-      n_documents: number;
-      /** @enum {string} */
-      distance_metric: "euclidean";
-      /** Format: int64 */
-      dimension: number;
-    };
-    IndicesResponse: {
-      indices: components["schemas"]["IndexResponse"][];
-    };
-    SearchRequest: {
-      /**
-       * @description Get documents close to the specified document. Provide either `ids` or `vectors`
-       * @example document1,document2,document3
-       */
-      ids?: string[];
-      /**
-       * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
-       * @example 1,2,3
-       */
-      vectors?: number[][];
-      /**
-       * @description Maximal number of neighbors to include in response
-       * @default 20
-       */
-      max_neighbors: number;
-      /**
-       * @description This parameter specifies the index to perform the query in
-       * @example xxxxxxxxxxxxxxxxxx
-       */
-      field_name: string;
-    };
-    SearchResponse: {
-      data?: string[][];
-    }[];
-  };
-  parameters: {
-    /**
-     * @description Your user ID. You can find your user ID in your dashboard
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    UserId: string;
-    /**
-     * @description The ID of the machine
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    MachineId: string;
-    /**
-     * @description Your organization ID. You can find your organization ID in your dashboard
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    OrganizationId: string;
-    /**
-     * @description The ID of the instance
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    InstanceId: string;
-    /**
-     * @description The ID of the database
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    DatabaseId: string;
-    /**
-     * @description The ID of the collection
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    CollectionId: string;
-    /**
-     * @description The ID of the index
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    IndexId: string;
-    /**
-     * @description The ID of the index
-     * @example xxxxxxxxxxxxxxxxxx
-     */
-    DocumentId: string;
-  };
-}
+export interface components {}
 
 export interface operations {
-  /** User login using access and secret token. */
-  userLogin: {
-    responses: {
-      /** successful operation */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LoginResponse"];
-        };
-      };
-      /** invalid parameters */
-      400: unknown;
-      /** invalid input */
-      401: unknown;
-      /** unauthorized */
-      403: unknown;
-      /** forbidden */
-      405: unknown;
-    };
-    /** Login email and password in exchange for JWT. */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserLogin"];
-      };
-    };
-  };
   /** Machine login using access and secret token. */
   machineLogin: {
     responses: {
       /** successful operation */
       200: {
         content: {
-          "application/json": components["schemas"]["LoginResponse"];
+          "application/json": {
+            access_token?: string;
+            /** @enum {string} */
+            type?: "Bearer";
+          };
         };
       };
-      /** invalid parameters */
-      400: unknown;
-      /** invalid input */
-      401: unknown;
-      /** unauthorized */
-      403: unknown;
-      /** forbidden */
-      405: unknown;
+      /** error */
+      default: {
+        content: {
+          "application/json": {
+            error?: string;
+          };
+        };
+      };
     };
     /** Exchange access and secret token for JSON web token (JWT). */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["MachineLogin"];
+        "application/json": {
+          access_key: string;
+          secret_key: string;
+        };
       };
     };
   };
@@ -1047,7 +1111,23 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": components["schemas"]["GetMachinesResponse"];
+          "application/json": {
+            machines?: {
+              machine_name?: string;
+              id?: string;
+              key?: string;
+              /** @enum {string} */
+              permission?: "write" | "read" | "admin";
+            }[];
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json": {
+            error?: string;
+          };
         };
       };
     };
@@ -1058,13 +1138,32 @@ export interface operations {
       /** successful operation */
       200: {
         content: {
-          "application/json": components["schemas"]["PostMachineResponse"];
+          "application/json": {
+            machine_name?: string;
+            id?: string;
+            key?: string;
+            secret?: string;
+            /** @enum {string} */
+            permission?: "write" | "read" | "admin";
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json": {
+            error?: string;
+          };
         };
       };
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PostMachineRequest"];
+        "application/json": {
+          machine_name: string;
+          /** @enum {string} */
+          permission: "write" | "read" | "admin";
+        };
       };
     };
   };
@@ -1073,12 +1172,20 @@ export interface operations {
     parameters: {
       path: {
         /** The ID of the machine */
-        machine_id: components["parameters"]["MachineId"];
+        machine_id: string;
       };
     };
     responses: {
       /** successful operation */
       200: unknown;
+      /** error */
+      default: {
+        content: {
+          "application/json": {
+            error?: string;
+          };
+        };
+      };
     };
   };
 }

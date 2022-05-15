@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
@@ -87,17 +86,16 @@ class State {
       await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
       return;
     }
-    await this.hiddb.userRefresh();
   }
 }
 
 export class HIDDB extends EventTarget {
-  private state: State;
+  public state: State;
   private axios: AxiosInstance;
   private client: AxiosInstance;
   private dbDomain: string;
 
-  constructor(params: { key?: string, secret?: string, apiDomain?: string, dbDomain?: string, secure?: boolean}) {
+  constructor(params: { key?: string, secret?: string, apiDomain?: string, dbDomain?: string, secure?: boolean }) {
     super();
     this.state = new State(this, params.key, params.secret);
 
@@ -120,7 +118,7 @@ export class HIDDB extends EventTarget {
 
     this.dbDomain = params.dbDomain;
     this.client = axios.create({
-      baseURL: `${params.secure ? 'https' : 'http' }://api.${params.apiDomain}`,
+      baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain}`,
       timeout: 30000
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';
@@ -160,118 +158,6 @@ export class HIDDB extends EventTarget {
 
   isAuthenticated() {
     return Boolean(this.state.accessToken);
-  }
-
-  async logout() {
-    this.state.accessToken = undefined;
-    if (!this.state.machineKey || !this.state.machineSecret) {
-      const path = "/user/logout" as const;
-      const method = "post" as const;
-
-      await this.client[method]<
-        paths[typeof path][typeof method]["responses"]["200"]
-      >(path, undefined, { withCredentials: true });
-    }
-
-    // @ts-expect-error
-    this.dispatchEvent(new Event('logout'));
-  }
-
-  async userRegister(email: string, password: string) {
-    const path = "/user/register" as const;
-    const method = "post" as const;
-
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
-    {
-      email,
-      password,
-    };
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
-    >(path, body);
-
-    return response.data
-  }
-
-  async userUpdateVerify(userId: string, otp: string) {
-    const path = "/user/update/verify" as const;
-    const method = "post" as const;
-
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
-    {
-      user_id: userId,
-      otp: otp,
-    };
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
-    >(path, body);
-
-    return response.data
-  }
-
-  async userResetPassword(email: string) {
-    const path = "/user/reset" as const;
-    const method = "post" as const;
-
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
-    {
-      email,
-    };
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
-    >(path, body);
-
-    return response.data
-  }
-
-  async userUpdateResetPassword(userId: string, otp: string, password: string) {
-    const path = "/user/update/reset" as const;
-    const method = "post" as const;
-
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
-    {
-      user_id: userId,
-      otp: otp,
-      password
-    };
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]
-    >(path, body);
-    return response.data
-  }
-
-  async userLogin(email: string, password: string) {
-    const path = "/user/login" as const;
-    const method = "post" as const;
-
-    const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] =
-    {
-      email,
-      password,
-    };
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(path, body, { withCredentials: true });
-
-    // update accessToken
-    this.state.accessToken = response.data.access_token;
-  }
-
-  async userRefresh() {
-    const path = "/user/refresh" as const;
-    const method = "post" as const;
-
-    const response = await this.client[method]<
-      paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"]
-    >(path, {}, { withCredentials: true });
-
-    // update accessToken
-    this.state.accessToken = response.data.access_token;
   }
 
   async machineLogin(key: string, secret: string) {

@@ -48,7 +48,6 @@ class $149c1bd638913645$var$State {
             await this.hiddb.machineLogin(this.machineKey, this.machineSecret);
             return;
         }
-        await this.hiddb.userRefresh();
     }
 }
 class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
@@ -99,81 +98,6 @@ class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
     }
     isAuthenticated() {
         return Boolean(this.state.accessToken);
-    }
-    async logout() {
-        this.state.accessToken = undefined;
-        if (!this.state.machineKey || !this.state.machineSecret) {
-            const path = "/user/logout";
-            const method = "post";
-            await this.client[method](path, undefined, {
-                withCredentials: true
-            });
-        }
-        // @ts-expect-error
-        this.dispatchEvent(new Event('logout'));
-    }
-    async userRegister(email, password) {
-        const path = "/user/register";
-        const method = "post";
-        const body = {
-            email: email,
-            password: password
-        };
-        const response = await this.client[method](path, body);
-        return response.data;
-    }
-    async userUpdateVerify(userId, otp) {
-        const path = "/user/update/verify";
-        const method = "post";
-        const body = {
-            user_id: userId,
-            otp: otp
-        };
-        const response = await this.client[method](path, body);
-        return response.data;
-    }
-    async userResetPassword(email) {
-        const path = "/user/reset";
-        const method = "post";
-        const body = {
-            email: email
-        };
-        const response = await this.client[method](path, body);
-        return response.data;
-    }
-    async userUpdateResetPassword(userId, otp, password) {
-        const path = "/user/update/reset";
-        const method = "post";
-        const body = {
-            user_id: userId,
-            otp: otp,
-            password: password
-        };
-        const response = await this.client[method](path, body);
-        return response.data;
-    }
-    async userLogin(email, password) {
-        const path = "/user/login";
-        const method = "post";
-        const body = {
-            email: email,
-            password: password
-        };
-        const response = await this.client[method](path, body, {
-            withCredentials: true
-        });
-        // update accessToken
-        this.state.accessToken = response.data.access_token;
-    }
-    async userRefresh() {
-        const path = "/user/refresh";
-        const method = "post";
-        const response = await this.client[method](path, {
-        }, {
-            withCredentials: true
-        });
-        // update accessToken
-        this.state.accessToken = response.data.access_token;
     }
     async machineLogin(key, secret) {
         const path = "/machine/login";
