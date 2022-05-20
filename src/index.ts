@@ -4,8 +4,8 @@ import { paths } from "./hiddb";
 
 export abstract class State {
   abstract get accessToken(): string | undefined;
-  abstract get machineKey(): string;
-  abstract get machineSecret(): string;
+  abstract get machineKey(): string | undefined;
+  abstract get machineSecret(): string | undefined;
 
   abstract set accessToken(accessToken);
   protected abstract refreshToken(): Promise<void>;
@@ -42,8 +42,8 @@ class MachineState extends State {
   private _decoded?: JWT;
   private _refresh?: number;
 
-  private _key?: string;
-  private _secret?: string;
+  private _key: string;
+  private _secret: string;
 
   constructor(hiddb: HIDDB, key: string, secret: string) {
     super();
@@ -123,9 +123,10 @@ export class HIDDB extends EventTarget {
       }
     );
 
-    this.dbDomain = params.dbDomain;
+    this.dbDomain = params.dbDomain ?? 'hiddb.io';
+
     this.client = axios.create({
-      baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain}`,
+      baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain ?? 'hiddb.io'}`,
       timeout: 30000
     });
     this.client.defaults.headers.post['Content-Type'] = 'application/json';

@@ -68,9 +68,9 @@ class $149c1bd638913645$export$5192b5e175132710 extends EventTarget {
         }, (error)=>{
             return Promise.reject(error);
         });
-        this.dbDomain = params.dbDomain;
+        this.dbDomain = params.dbDomain ?? 'hiddb.io';
         this.client = $hgUW1$axios.create({
-            baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain}`,
+            baseURL: `${params.secure ? 'https' : 'http'}://api.${params.apiDomain ?? 'hiddb.io'}`,
             timeout: 30000
         });
         this.client.defaults.headers.post['Content-Type'] = 'application/json';

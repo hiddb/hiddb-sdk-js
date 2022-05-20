@@ -1,9 +1,9 @@
 import { AxiosInstance } from "axios";
 export abstract class State {
-    abstract get accessToken(): string;
-    abstract get machineKey(): string;
-    abstract get machineSecret(): string;
-    abstract set accessToken(accessToken: string);
+    abstract get accessToken(): string | undefined;
+    abstract get machineKey(): string | undefined;
+    abstract get machineSecret(): string | undefined;
+    abstract set accessToken(accessToken: string | undefined);
     protected abstract refreshToken(): Promise<void>;
 }
 export type JWT = {
@@ -63,11 +63,11 @@ export class HIDDB extends EventTarget {
     isAuthenticated(): boolean;
     machineLogin(key: string, secret: string): Promise<void>;
     createMachineAccount(machineName: string, permission: "read" | "write" | "admin"): Promise<{
-        machine_name?: string;
-        id?: string;
-        key?: string;
-        secret?: string;
-        permission?: "write" | "read" | "admin";
+        machine_name?: string | undefined;
+        id?: string | undefined;
+        key?: string | undefined;
+        secret?: string | undefined;
+        permission?: "write" | "read" | "admin" | undefined;
     }>;
     getMachineAccounts(): Promise<{
         machines: {
@@ -86,16 +86,16 @@ export class HIDDB extends EventTarget {
         database_name: string;
         organization_id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         instances: {
             id: string;
             created_at: string;
-            deleted_at: string;
+            deleted_at: string | null;
             status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
-                id?: string;
-            };
+                id?: string | undefined;
+            } | null;
             volume_size: number;
             location: "hel1" | "nbg1" | "fsn1";
         }[];
@@ -106,16 +106,16 @@ export class HIDDB extends EventTarget {
             database_name: string;
             organization_id: string;
             created_at: string;
-            deleted_at: string;
+            deleted_at: string | null;
             instances: {
                 id: string;
                 created_at: string;
-                deleted_at: string;
+                deleted_at: string | null;
                 status: "awake" | "provisioning" | "wakingup" | "asleep";
                 type: "s" | "xs" | "m" | "l" | "xl";
                 server: {
-                    id?: string;
-                };
+                    id?: string | undefined;
+                } | null;
                 volume_size: number;
                 location: "hel1" | "nbg1" | "fsn1";
             }[];
@@ -126,16 +126,16 @@ export class HIDDB extends EventTarget {
         database_name: string;
         organization_id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         instances: {
             id: string;
             created_at: string;
-            deleted_at: string;
+            deleted_at: string | null;
             status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
-                id?: string;
-            };
+                id?: string | undefined;
+            } | null;
             volume_size: number;
             location: "hel1" | "nbg1" | "fsn1";
         }[];
@@ -145,16 +145,16 @@ export class HIDDB extends EventTarget {
         database_name: string;
         organization_id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         instances: {
             id: string;
             created_at: string;
-            deleted_at: string;
+            deleted_at: string | null;
             status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
-                id?: string;
-            };
+                id?: string | undefined;
+            } | null;
             volume_size: number;
             location: "hel1" | "nbg1" | "fsn1";
         }[];
@@ -162,12 +162,12 @@ export class HIDDB extends EventTarget {
     createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl"): Promise<{
         id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
-            id?: string;
-        };
+            id?: string | undefined;
+        } | null;
         volume_size: number;
         location: "hel1" | "nbg1" | "fsn1";
     }>;
@@ -175,12 +175,12 @@ export class HIDDB extends EventTarget {
         instances: {
             id: string;
             created_at: string;
-            deleted_at: string;
+            deleted_at: string | null;
             status: "awake" | "provisioning" | "wakingup" | "asleep";
             type: "s" | "xs" | "m" | "l" | "xl";
             server: {
-                id?: string;
-            };
+                id?: string | undefined;
+            } | null;
             volume_size: number;
             location: "hel1" | "nbg1" | "fsn1";
         }[];
@@ -188,24 +188,24 @@ export class HIDDB extends EventTarget {
     getInstance(id: string): Promise<{
         id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
-            id?: string;
-        };
+            id?: string | undefined;
+        } | null;
         volume_size: number;
         location: "hel1" | "nbg1" | "fsn1";
     }>;
     deleteInstance(id: string): Promise<{
         id: string;
         created_at: string;
-        deleted_at: string;
+        deleted_at: string | null;
         status: "awake" | "provisioning" | "wakingup" | "asleep";
         type: "s" | "xs" | "m" | "l" | "xl";
         server: {
-            id?: string;
-        };
+            id?: string | undefined;
+        } | null;
         volume_size: number;
         location: "hel1" | "nbg1" | "fsn1";
     }>;
@@ -262,13 +262,13 @@ export class HIDDB extends EventTarget {
     }[]>;
     getDocument(databaseId: string, collection_name: string, id: string): Promise<{
         id: string;
-        field?: number[];
+        field?: number[] | undefined;
     } & {
         [key: string]: unknown;
     }>;
     deleteDocument(databaseId: string, collection_name: string, id: string): Promise<{
         id: string;
-        field?: number[];
+        field?: number[] | undefined;
     } & {
         [key: string]: unknown;
     }>;
