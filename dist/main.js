@@ -173,13 +173,14 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         this.dispatchEvent(new Event('databaseDeleted'));
         return response.data;
     }
-    async createInstance(id, volume_size, type) {
+    async createInstance(id, volume_size, type, location) {
         const path = "/instance";
         const method = "post";
         const body = {
             database_id: id,
             volume_size: volume_size,
-            type: type
+            type: type,
+            location: location
         };
         const response = await this.client[method](path, body);
         // @ts-expect-error

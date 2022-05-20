@@ -81,6 +81,7 @@ export class HIDDB extends EventTarget {
     createDatabase(name: string, instances: [{
         type: "xs" | "s" | "m" | "l" | "xl";
         volume_size: number;
+        location: "hel1" | "nbg1" | "fsn1";
     }]): Promise<{
         id: string;
         database_name: string;
@@ -159,7 +160,7 @@ export class HIDDB extends EventTarget {
             location: "hel1" | "nbg1" | "fsn1";
         }[];
     }>;
-    createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl"): Promise<{
+    createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl", location: "hel1" | "nbg1" | "fsn1"): Promise<{
         id: string;
         created_at: string;
         deleted_at: string | null;
