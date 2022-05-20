@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { paths } from "./hiddb";
 
 export abstract class State {
-  abstract get accessToken(): string;
+  abstract get accessToken(): string | undefined;
   abstract get machineKey(): string;
   abstract get machineSecret(): string;
 
