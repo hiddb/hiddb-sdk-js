@@ -1,6 +1,6 @@
 {
   "name": "hiddb",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "",
   "source": "src/index.ts",
   "main": "dist/main.js",
