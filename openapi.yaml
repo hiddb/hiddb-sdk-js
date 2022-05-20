@@ -143,6 +143,12 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - machine_name
+                  - id
+                  - key
+                  - secret
+                  - permission
                 properties:
                   machine_name:
                     type: string

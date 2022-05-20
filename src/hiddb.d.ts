@@ -1139,12 +1139,12 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            machine_name?: string;
-            id?: string;
-            key?: string;
-            secret?: string;
+            machine_name: string;
+            id: string;
+            key: string;
+            secret: string;
             /** @enum {string} */
-            permission?: "write" | "read" | "admin";
+            permission: "write" | "read" | "admin";
           };
         };
       };
