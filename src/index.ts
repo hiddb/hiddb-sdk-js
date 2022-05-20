@@ -225,7 +225,7 @@ export class HIDDB extends EventTarget {
     return response.data
   }
 
-  async createDatabase(name: string, instances: [{ type: "xs" | "s" | "m" | "l" | "xl", volume_size: number }]) {
+  async createDatabase(name: string, instances: [{ type: "xs" | "s" | "m" | "l" | "xl", volume_size: number, location: "hel1" | "nbg1" | "fsn1" }]) {
     const path = "/database" as const;
     const method = "post" as const;
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
@@ -279,13 +279,14 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl") {
+  async createInstance(id: string, volume_size: number, type: "xs" | "s" | "m" | "l" | "xl", location: "hel1" | "nbg1" | "fsn1") {
     const path = "/instance" as const;
     const method = "post" as const;
     const body: paths[typeof path][typeof method]["requestBody"]["content"]["application/json"] = {
       database_id: id,
       volume_size,
-      type
+      type,
+      location
     };
 
     const response = await this.client[method]<
