@@ -63,11 +63,11 @@ export class HIDDB extends EventTarget {
     isAuthenticated(): boolean;
     machineLogin(key: string, secret: string): Promise<void>;
     createMachineAccount(machineName: string, permission: "read" | "write" | "admin"): Promise<{
-        machine_name?: string | undefined;
-        id?: string | undefined;
-        key?: string | undefined;
-        secret?: string | undefined;
-        permission?: "write" | "read" | "admin" | undefined;
+        machine_name: string;
+        id: string;
+        key: string;
+        secret: string;
+        permission: "write" | "read" | "admin";
     }>;
     getMachineAccounts(): Promise<{
         machines: {
