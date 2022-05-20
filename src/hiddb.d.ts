@@ -32,31 +32,31 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              databases?: {
-                id?: string;
-                database_name?: string;
+              databases: {
+                id: string;
+                database_name: string;
                 /** @example xxxxxxxxxxxxxxxxxx */
-                organization_id?: string;
+                organization_id: string;
                 /** Format: date-time */
-                created_at?: string;
+                created_at: string;
                 /** Format: date-time */
-                deleted_at?: string | null;
-                instances?: {
-                  id?: string;
+                deleted_at: string | null;
+                instances: {
+                  id: string;
                   /** Format: date-time */
-                  created_at?: string;
+                  created_at: string;
                   /** Format: date-time */
-                  deleted_at?: string | null;
+                  deleted_at: string | null;
                   /** @enum {string} */
-                  status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                  status: "awake" | "provisioning" | "wakingup" | "asleep";
                   /**
                    * @description Instance type
                    * @default s
                    * @example s
                    * @enum {string}
                    */
-                  type?: "xs" | "s" | "m" | "l" | "xl";
-                  server?: {
+                  type: "xs" | "s" | "m" | "l" | "xl";
+                  server: {
                     id?: string;
                   } | null;
                   /**
@@ -64,12 +64,12 @@ export interface paths {
                    * @default 10
                    * @example 100
                    */
-                  volume_size?: number;
+                  volume_size: number;
                   /**
                    * @description Physical instance location
                    * @enum {string}
                    */
-                  location?: "hel1" | "nbg1" | "fsn1";
+                  location: "hel1" | "nbg1" | "fsn1";
                 }[];
               }[];
             };
@@ -80,7 +80,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -92,30 +92,30 @@ export interface paths {
         202: {
           content: {
             "application/json": {
-              id?: string;
-              database_name?: string;
+              id: string;
+              database_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id?: string;
+              organization_id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
-              instances?: {
-                id?: string;
+              deleted_at: string | null;
+              instances: {
+                id: string;
                 /** Format: date-time */
-                created_at?: string;
+                created_at: string;
                 /** Format: date-time */
-                deleted_at?: string | null;
+                deleted_at: string | null;
                 /** @enum {string} */
-                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
                 /**
                  * @description Instance type
                  * @default s
                  * @example s
                  * @enum {string}
                  */
-                type?: "xs" | "s" | "m" | "l" | "xl";
-                server?: {
+                type: "xs" | "s" | "m" | "l" | "xl";
+                server: {
                   id?: string;
                 } | null;
                 /**
@@ -123,12 +123,12 @@ export interface paths {
                  * @default 10
                  * @example 100
                  */
-                volume_size?: number;
+                volume_size: number;
                 /**
                  * @description Physical instance location
                  * @enum {string}
                  */
-                location?: "hel1" | "nbg1" | "fsn1";
+                location: "hel1" | "nbg1" | "fsn1";
               }[];
             };
           };
@@ -138,7 +138,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -178,30 +178,30 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              id?: string;
-              database_name?: string;
+              id: string;
+              database_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id?: string;
+              organization_id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
-              instances?: {
-                id?: string;
+              deleted_at: string | null;
+              instances: {
+                id: string;
                 /** Format: date-time */
-                created_at?: string;
+                created_at: string;
                 /** Format: date-time */
-                deleted_at?: string | null;
+                deleted_at: string | null;
                 /** @enum {string} */
-                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
                 /**
                  * @description Instance type
                  * @default s
                  * @example s
                  * @enum {string}
                  */
-                type?: "xs" | "s" | "m" | "l" | "xl";
-                server?: {
+                type: "xs" | "s" | "m" | "l" | "xl";
+                server: {
                   id?: string;
                 } | null;
                 /**
@@ -209,12 +209,12 @@ export interface paths {
                  * @default 10
                  * @example 100
                  */
-                volume_size?: number;
+                volume_size: number;
                 /**
                  * @description Physical instance location
                  * @enum {string}
                  */
-                location?: "hel1" | "nbg1" | "fsn1";
+                location: "hel1" | "nbg1" | "fsn1";
               }[];
             };
           };
@@ -224,7 +224,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -242,30 +242,30 @@ export interface paths {
         202: {
           content: {
             "application/json": {
-              id?: string;
-              database_name?: string;
+              id: string;
+              database_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id?: string;
+              organization_id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
-              instances?: {
-                id?: string;
+              deleted_at: string | null;
+              instances: {
+                id: string;
                 /** Format: date-time */
-                created_at?: string;
+                created_at: string;
                 /** Format: date-time */
-                deleted_at?: string | null;
+                deleted_at: string | null;
                 /** @enum {string} */
-                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
                 /**
                  * @description Instance type
                  * @default s
                  * @example s
                  * @enum {string}
                  */
-                type?: "xs" | "s" | "m" | "l" | "xl";
-                server?: {
+                type: "xs" | "s" | "m" | "l" | "xl";
+                server: {
                   id?: string;
                 } | null;
                 /**
@@ -273,12 +273,12 @@ export interface paths {
                  * @default 10
                  * @example 100
                  */
-                volume_size?: number;
+                volume_size: number;
                 /**
                  * @description Physical instance location
                  * @enum {string}
                  */
-                location?: "hel1" | "nbg1" | "fsn1";
+                location: "hel1" | "nbg1" | "fsn1";
               }[];
             };
           };
@@ -288,7 +288,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -309,21 +309,21 @@ export interface paths {
           content: {
             "application/json": {
               instances: {
-                id?: string;
+                id: string;
                 /** Format: date-time */
-                created_at?: string;
+                created_at: string;
                 /** Format: date-time */
-                deleted_at?: string | null;
+                deleted_at: string | null;
                 /** @enum {string} */
-                status?: "awake" | "provisioning" | "wakingup" | "asleep";
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
                 /**
                  * @description Instance type
                  * @default s
                  * @example s
                  * @enum {string}
                  */
-                type?: "xs" | "s" | "m" | "l" | "xl";
-                server?: {
+                type: "xs" | "s" | "m" | "l" | "xl";
+                server: {
                   id?: string;
                 } | null;
                 /**
@@ -331,12 +331,12 @@ export interface paths {
                  * @default 10
                  * @example 100
                  */
-                volume_size?: number;
+                volume_size: number;
                 /**
                  * @description Physical instance location
                  * @enum {string}
                  */
-                location?: "hel1" | "nbg1" | "fsn1";
+                location: "hel1" | "nbg1" | "fsn1";
               }[];
             };
           };
@@ -346,7 +346,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -358,21 +358,21 @@ export interface paths {
         202: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
+              deleted_at: string | null;
               /** @enum {string} */
-              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
               /**
                * @description Instance type
                * @default s
                * @example s
                * @enum {string}
                */
-              type?: "xs" | "s" | "m" | "l" | "xl";
-              server?: {
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
                 id?: string;
               } | null;
               /**
@@ -380,12 +380,12 @@ export interface paths {
                * @default 10
                * @example 100
                */
-              volume_size?: number;
+              volume_size: number;
               /**
                * @description Physical instance location
                * @enum {string}
                */
-              location?: "hel1" | "nbg1" | "fsn1";
+              location: "hel1" | "nbg1" | "fsn1";
             };
           };
         };
@@ -394,7 +394,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -441,21 +441,21 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
+              deleted_at: string | null;
               /** @enum {string} */
-              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
               /**
                * @description Instance type
                * @default s
                * @example s
                * @enum {string}
                */
-              type?: "xs" | "s" | "m" | "l" | "xl";
-              server?: {
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
                 id?: string;
               } | null;
               /**
@@ -463,12 +463,12 @@ export interface paths {
                * @default 10
                * @example 100
                */
-              volume_size?: number;
+              volume_size: number;
               /**
                * @description Physical instance location
                * @enum {string}
                */
-              location?: "hel1" | "nbg1" | "fsn1";
+              location: "hel1" | "nbg1" | "fsn1";
             };
           };
         };
@@ -477,7 +477,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -495,21 +495,21 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
+              deleted_at: string | null;
               /** @enum {string} */
-              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
               /**
                * @description Instance type
                * @default s
                * @example s
                * @enum {string}
                */
-              type?: "xs" | "s" | "m" | "l" | "xl";
-              server?: {
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
                 id?: string;
               } | null;
               /**
@@ -517,12 +517,12 @@ export interface paths {
                * @default 10
                * @example 100
                */
-              volume_size?: number;
+              volume_size: number;
               /**
                * @description Physical instance location
                * @enum {string}
                */
-              location?: "hel1" | "nbg1" | "fsn1";
+              location: "hel1" | "nbg1" | "fsn1";
             };
           };
         };
@@ -531,7 +531,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -557,21 +557,21 @@ export interface paths {
         202: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** Format: date-time */
-              created_at?: string;
+              created_at: string;
               /** Format: date-time */
-              deleted_at?: string | null;
+              deleted_at: string | null;
               /** @enum {string} */
-              status?: "awake" | "provisioning" | "wakingup" | "asleep";
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
               /**
                * @description Instance type
                * @default s
                * @example s
                * @enum {string}
                */
-              type?: "xs" | "s" | "m" | "l" | "xl";
-              server?: {
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
                 id?: string;
               } | null;
               /**
@@ -579,12 +579,12 @@ export interface paths {
                * @default 10
                * @example 100
                */
-              volume_size?: number;
+              volume_size: number;
               /**
                * @description Physical instance location
                * @enum {string}
                */
-              location?: "hel1" | "nbg1" | "fsn1";
+              location: "hel1" | "nbg1" | "fsn1";
             };
           };
         };
@@ -593,7 +593,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -613,9 +613,9 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              collections?: {
+              collections: {
                 /** @example xxxxxxxxxxxxxxxxxx */
-                collection_name?: string;
+                collection_name: string;
               }[];
             };
           };
@@ -625,7 +625,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -638,7 +638,7 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
             };
           };
         };
@@ -647,7 +647,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -675,7 +675,7 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
             };
           };
         };
@@ -684,7 +684,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -702,7 +702,7 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
             };
           };
         };
@@ -711,7 +711,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -731,17 +731,17 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              indices?: {
+              indices: {
                 /** @example xxxxxxxxxxxxxxxxxx */
-                collection_name?: string;
+                collection_name: string;
                 /** @example xxxxxxxxxxxxxxxxxx */
-                field_name?: string;
+                field_name: string;
                 /** Format: int64 */
-                n_documents?: number;
+                n_documents: number;
                 /** @enum {string} */
-                distance_metric?: "euclidean";
+                distance_metric: "euclidean";
                 /** Format: int64 */
-                dimension?: number;
+                dimension: number;
               }[];
             };
           };
@@ -751,7 +751,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -770,15 +770,15 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              field_name?: string;
+              field_name: string;
               /** Format: int64 */
-              n_documents?: number;
+              n_documents: number;
               /** @enum {string} */
-              distance_metric?: "euclidean";
+              distance_metric: "euclidean";
               /** Format: int64 */
-              dimension?: number;
+              dimension: number;
             };
           };
         };
@@ -787,7 +787,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -826,15 +826,15 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              field_name?: string;
+              field_name: string;
               /** Format: int64 */
-              n_documents?: number;
+              n_documents: number;
               /** @enum {string} */
-              distance_metric?: "euclidean";
+              distance_metric: "euclidean";
               /** Format: int64 */
-              dimension?: number;
+              dimension: number;
             };
           };
         };
@@ -843,7 +843,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -864,15 +864,15 @@ export interface paths {
           content: {
             "application/json": {
               /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name?: string;
+              collection_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              field_name?: string;
+              field_name: string;
               /** Format: int64 */
-              n_documents?: number;
+              n_documents: number;
               /** @enum {string} */
-              distance_metric?: "euclidean";
+              distance_metric: "euclidean";
               /** Format: int64 */
-              dimension?: number;
+              dimension: number;
             };
           };
         };
@@ -881,7 +881,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -912,7 +912,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -949,7 +949,7 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              data?: string[][];
+              data: string[][];
             }[];
           };
         };
@@ -958,7 +958,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -1012,7 +1012,7 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** @example 1,2,3 */
               field?: number[];
             } & { [key: string]: unknown };
@@ -1023,7 +1023,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -1043,7 +1043,7 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              id?: string;
+              id: string;
               /** @example 1,2,3 */
               field?: number[];
             } & { [key: string]: unknown };
@@ -1054,7 +1054,7 @@ export interface paths {
           content: {
             "application/json": {
               error?: string;
-            };
+            } & { [key: string]: unknown };
           };
         };
       };
@@ -1080,9 +1080,9 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            access_token?: string;
+            access_token: string;
             /** @enum {string} */
-            type?: "Bearer";
+            type: "Bearer";
           };
         };
       };
@@ -1091,7 +1091,7 @@ export interface operations {
         content: {
           "application/json": {
             error?: string;
-          };
+          } & { [key: string]: unknown };
         };
       };
     };
@@ -1112,12 +1112,12 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            machines?: {
-              machine_name?: string;
-              id?: string;
-              key?: string;
+            machines: {
+              machine_name: string;
+              id: string;
+              key: string;
               /** @enum {string} */
-              permission?: "write" | "read" | "admin";
+              permission: "write" | "read" | "admin";
             }[];
           };
         };
@@ -1127,7 +1127,7 @@ export interface operations {
         content: {
           "application/json": {
             error?: string;
-          };
+          } & { [key: string]: unknown };
         };
       };
     };
@@ -1153,7 +1153,7 @@ export interface operations {
         content: {
           "application/json": {
             error?: string;
-          };
+          } & { [key: string]: unknown };
         };
       };
     };
@@ -1183,7 +1183,7 @@ export interface operations {
         content: {
           "application/json": {
             error?: string;
-          };
+          } & { [key: string]: unknown };
         };
       };
     };

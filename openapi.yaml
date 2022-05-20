@@ -86,6 +86,10 @@ paths:
             application/json:
               schema:
                 type: object
+                additionalProperties: false
+                required:
+                  - access_token
+                  - type
                 properties:
                   access_token:
                     type: string
@@ -99,7 +103,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -168,7 +172,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -206,12 +210,19 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - machines
                 properties:
                   machines:
                     type: array
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - machine_name
+                        - key
+                        - permission
                       properties:
                         machine_name:
                           type: string
@@ -237,7 +248,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -269,7 +280,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -288,12 +299,21 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - databases
                 properties:
                   databases:
                     type: array
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - database_name
+                        - organization_id
+                        - created_at
+                        - deleted_at
+                        - instances
                       properties:
                         id:
                           type: string
@@ -323,6 +343,15 @@ paths:
                           items:
                             type: object
                             additionalProperties: false
+                            required:
+                              - id
+                              - created_at
+                              - deleted_at
+                              - status
+                              - type
+                              - server
+                              - volume_size
+                              - location
                             properties:
                               id:
                                 type: string
@@ -385,7 +414,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -445,6 +474,13 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
                 properties:
                   id:
                     type: string
@@ -474,6 +510,15 @@ paths:
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
                       properties:
                         id:
                           type: string
@@ -536,7 +581,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -566,6 +611,13 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
                 properties:
                   id:
                     type: string
@@ -595,6 +647,15 @@ paths:
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
                       properties:
                         id:
                           type: string
@@ -657,7 +718,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -674,6 +735,13 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - database_name
+                  - organization_id
+                  - created_at
+                  - deleted_at
+                  - instances
                 properties:
                   id:
                     type: string
@@ -703,6 +771,15 @@ paths:
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
                       properties:
                         id:
                           type: string
@@ -765,7 +842,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -792,6 +869,15 @@ paths:
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - id
+                        - created_at
+                        - deleted_at
+                        - status
+                        - type
+                        - server
+                        - volume_size
+                        - location
                       properties:
                         id:
                           type: string
@@ -854,7 +940,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -912,6 +998,15 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
                 properties:
                   id:
                     type: string
@@ -974,7 +1069,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1004,6 +1099,15 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
                 properties:
                   id:
                     type: string
@@ -1066,7 +1170,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1097,6 +1201,15 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
                 properties:
                   id:
                     type: string
@@ -1159,7 +1272,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1176,6 +1289,15 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - id
+                  - created_at
+                  - deleted_at
+                  - status
+                  - type
+                  - server
+                  - volume_size
+                  - location
                 properties:
                   id:
                     type: string
@@ -1238,7 +1360,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1260,12 +1382,16 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collections
                 properties:
                   collections:
                     type: array
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - collection_name
                       properties:
                         collection_name:
                           type: string
@@ -1279,7 +1405,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1312,6 +1438,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
                 properties:
                   collection_name:
                     type: string
@@ -1325,7 +1453,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1356,6 +1484,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
                 properties:
                   collection_name:
                     type: string
@@ -1369,7 +1499,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1395,6 +1525,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
                 properties:
                   collection_name:
                     type: string
@@ -1408,7 +1540,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1441,12 +1573,20 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - indices
                 properties:
                   indices:
                     type: array
                     items:
                       type: object
                       additionalProperties: false
+                      required:
+                        - collection_name
+                        - field_name
+                        - n_documents
+                        - distance_metric
+                        - dimension
                       properties:
                         collection_name:
                           type: string
@@ -1476,7 +1616,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1512,6 +1652,12 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
+                  - field_name
+                  - n_documents
+                  - distance_metric
+                  - dimension
                 properties:
                   collection_name:
                     type: string
@@ -1541,7 +1687,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1584,6 +1730,12 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
+                  - field_name
+                  - n_documents
+                  - distance_metric
+                  - dimension
                 properties:
                   collection_name:
                     type: string
@@ -1613,7 +1765,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1630,6 +1782,12 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+                required:
+                  - collection_name
+                  - field_name
+                  - n_documents
+                  - distance_metric
+                  - dimension
                 properties:
                   collection_name:
                     type: string
@@ -1659,7 +1817,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1722,7 +1880,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1799,6 +1957,8 @@ paths:
                 items:
                   type: object
                   additionalProperties: false
+                  required:
+                    - data
                   properties:
                     data:
                       type: array
@@ -1812,7 +1972,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1855,6 +2015,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - id
                 properties:
                   id:
                     type: string
@@ -1875,7 +2037,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
@@ -1892,6 +2054,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                required:
+                  - id
                 properties:
                   id:
                     type: string
@@ -1912,7 +2076,7 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                additionalProperties: true
                 properties:
                   error:
                     type: string
