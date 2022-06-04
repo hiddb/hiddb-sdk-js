@@ -26,273 +26,15 @@ export interface paths {
   };
   "/database": {
     /** Get information about databases */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              databases: {
-                id: string;
-                database_name: string;
-                /** @example xxxxxxxxxxxxxxxxxx */
-                organization_id: string;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                deleted_at: string | null;
-                instances: {
-                  id: string;
-                  /** Format: date-time */
-                  created_at: string;
-                  /** Format: date-time */
-                  deleted_at: string | null;
-                  /** @enum {string} */
-                  status: "awake" | "provisioning" | "wakingup" | "asleep";
-                  /**
-                   * @description Instance type
-                   * @default s
-                   * @example s
-                   * @enum {string}
-                   */
-                  type: "xs" | "s" | "m" | "l" | "xl";
-                  server: {
-                    id?: string;
-                  } | null;
-                  /**
-                   * @description Size of mounted and volume in gb
-                   * @default 10
-                   * @example 100
-                   */
-                  volume_size: number;
-                  /**
-                   * @description Physical instance location
-                   * @enum {string}
-                   */
-                  location: "hel1" | "nbg1" | "fsn1";
-                }[];
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
-    /** Create new database */
-    post: {
-      responses: {
-        /** successful operation */
-        202: {
-          content: {
-            "application/json": {
-              id: string;
-              database_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              instances: {
-                id: string;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                deleted_at: string | null;
-                /** @enum {string} */
-                status: "awake" | "provisioning" | "wakingup" | "asleep";
-                /**
-                 * @description Instance type
-                 * @default s
-                 * @example s
-                 * @enum {string}
-                 */
-                type: "xs" | "s" | "m" | "l" | "xl";
-                server: {
-                  id?: string;
-                } | null;
-                /**
-                 * @description Size of mounted and volume in gb
-                 * @default 10
-                 * @example 100
-                 */
-                volume_size: number;
-                /**
-                 * @description Physical instance location
-                 * @enum {string}
-                 */
-                location: "hel1" | "nbg1" | "fsn1";
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      /** Newly created database. */
-      requestBody: {
-        content: {
-          "application/json": {
-            database_name: string;
-            instances?: {
-              /** @enum {string} */
-              location?: "hel1" | "nbg1" | "fsn1";
-              /** @enum {string} */
-              type?: "xs" | "s" | "m" | "l" | "xl";
-              /**
-               * @description Size of mounted and volume in gb
-               * @default 10
-               * @example 100
-               */
-              volume_size?: number;
-            }[];
-          };
-        };
-      };
-    };
+    get: operations["listDatabase"];
+    /** Create new database. */
+    post: operations["createDatabase"];
   };
   "/database/{database_id}": {
     /** Get information about specific database */
-    get: {
-      parameters: {
-        path: {
-          /** The ID of the database */
-          database_id: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              id: string;
-              database_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              instances: {
-                id: string;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                deleted_at: string | null;
-                /** @enum {string} */
-                status: "awake" | "provisioning" | "wakingup" | "asleep";
-                /**
-                 * @description Instance type
-                 * @default s
-                 * @example s
-                 * @enum {string}
-                 */
-                type: "xs" | "s" | "m" | "l" | "xl";
-                server: {
-                  id?: string;
-                } | null;
-                /**
-                 * @description Size of mounted and volume in gb
-                 * @default 10
-                 * @example 100
-                 */
-                volume_size: number;
-                /**
-                 * @description Physical instance location
-                 * @enum {string}
-                 */
-                location: "hel1" | "nbg1" | "fsn1";
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["getDatabase"];
     /** Delete a specific database */
-    delete: {
-      parameters: {
-        path: {
-          /** The ID of the database */
-          database_id: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        202: {
-          content: {
-            "application/json": {
-              id: string;
-              database_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              organization_id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              instances: {
-                id: string;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                deleted_at: string | null;
-                /** @enum {string} */
-                status: "awake" | "provisioning" | "wakingup" | "asleep";
-                /**
-                 * @description Instance type
-                 * @default s
-                 * @example s
-                 * @enum {string}
-                 */
-                type: "xs" | "s" | "m" | "l" | "xl";
-                server: {
-                  id?: string;
-                } | null;
-                /**
-                 * @description Size of mounted and volume in gb
-                 * @default 10
-                 * @example 100
-                 */
-                volume_size: number;
-                /**
-                 * @description Physical instance location
-                 * @enum {string}
-                 */
-                location: "hel1" | "nbg1" | "fsn1";
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    delete: operations["deleteDatabase"];
     parameters: {
       path: {
         /** The ID of the database */
@@ -302,302 +44,15 @@ export interface paths {
   };
   "/instance": {
     /** Get information about instances */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              instances: {
-                id: string;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                deleted_at: string | null;
-                /** @enum {string} */
-                status: "awake" | "provisioning" | "wakingup" | "asleep";
-                /**
-                 * @description Instance type
-                 * @default s
-                 * @example s
-                 * @enum {string}
-                 */
-                type: "xs" | "s" | "m" | "l" | "xl";
-                server: {
-                  id?: string;
-                } | null;
-                /**
-                 * @description Size of mounted and volume in gb
-                 * @default 10
-                 * @example 100
-                 */
-                volume_size: number;
-                /**
-                 * @description Physical instance location
-                 * @enum {string}
-                 */
-                location: "hel1" | "nbg1" | "fsn1";
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
-    /** Create new instance */
-    post: {
-      responses: {
-        /** successful operation */
-        202: {
-          content: {
-            "application/json": {
-              id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              /** @enum {string} */
-              status: "awake" | "provisioning" | "wakingup" | "asleep";
-              /**
-               * @description Instance type
-               * @default s
-               * @example s
-               * @enum {string}
-               */
-              type: "xs" | "s" | "m" | "l" | "xl";
-              server: {
-                id?: string;
-              } | null;
-              /**
-               * @description Size of mounted and volume in gb
-               * @default 10
-               * @example 100
-               */
-              volume_size: number;
-              /**
-               * @description Physical instance location
-               * @enum {string}
-               */
-              location: "hel1" | "nbg1" | "fsn1";
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      /** Newly created Instance. */
-      requestBody: {
-        content: {
-          "application/json": {
-            /** @example xxxxxxxxxxxxxxxxxx */
-            database_id: string;
-            /**
-             * @description Instance type
-             * @default s
-             * @example s
-             * @enum {string}
-             */
-            type?: "xs" | "s" | "m" | "l" | "xl";
-            /**
-             * @description Size of mounted and volume in gb
-             * @default 10
-             * @example 100
-             */
-            volume_size?: number;
-            /**
-             * @description Physical instance location
-             * @enum {string}
-             */
-            location?: "hel1" | "nbg1" | "fsn1";
-          };
-        };
-      };
-    };
+    get: operations["listInstances"];
+    /** Create new instance. Currently you can only create a single instance per database. In future versions we will not restrict the number of instances per database. */
+    post: operations["createInstance"];
   };
   "/instance/{instance_id}": {
     /** Get information about specific instance */
-    get: {
-      parameters: {
-        path: {
-          /** The ID of the instance */
-          instance_id: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              /** @enum {string} */
-              status: "awake" | "provisioning" | "wakingup" | "asleep";
-              /**
-               * @description Instance type
-               * @default s
-               * @example s
-               * @enum {string}
-               */
-              type: "xs" | "s" | "m" | "l" | "xl";
-              server: {
-                id?: string;
-              } | null;
-              /**
-               * @description Size of mounted and volume in gb
-               * @default 10
-               * @example 100
-               */
-              volume_size: number;
-              /**
-               * @description Physical instance location
-               * @enum {string}
-               */
-              location: "hel1" | "nbg1" | "fsn1";
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
-    /** Awake or put instance to sleep */
-    put: {
-      parameters: {
-        path: {
-          /** The ID of the instance */
-          instance_id: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              /** @enum {string} */
-              status: "awake" | "provisioning" | "wakingup" | "asleep";
-              /**
-               * @description Instance type
-               * @default s
-               * @example s
-               * @enum {string}
-               */
-              type: "xs" | "s" | "m" | "l" | "xl";
-              server: {
-                id?: string;
-              } | null;
-              /**
-               * @description Size of mounted and volume in gb
-               * @default 10
-               * @example 100
-               */
-              volume_size: number;
-              /**
-               * @description Physical instance location
-               * @enum {string}
-               */
-              location: "hel1" | "nbg1" | "fsn1";
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            /** @enum {string} */
-            status: "awake" | "asleep";
-          };
-        };
-      };
-    };
+    get: operations["getInstance"];
     /** Delete a specific Instance */
-    delete: {
-      parameters: {
-        path: {
-          /** The ID of the instance */
-          instance_id: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        202: {
-          content: {
-            "application/json": {
-              id: string;
-              /** Format: date-time */
-              created_at: string;
-              /** Format: date-time */
-              deleted_at: string | null;
-              /** @enum {string} */
-              status: "awake" | "provisioning" | "wakingup" | "asleep";
-              /**
-               * @description Instance type
-               * @default s
-               * @example s
-               * @enum {string}
-               */
-              type: "xs" | "s" | "m" | "l" | "xl";
-              server: {
-                id?: string;
-              } | null;
-              /**
-               * @description Size of mounted and volume in gb
-               * @default 10
-               * @example 100
-               */
-              volume_size: number;
-              /**
-               * @description Physical instance location
-               * @enum {string}
-               */
-              location: "hel1" | "nbg1" | "fsn1";
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    delete: operations["deleteInstance"];
     parameters: {
       path: {
         /** The ID of the instance */
@@ -607,201 +62,21 @@ export interface paths {
   };
   "/collection": {
     /** Get information about collections */
-    get: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              collections: {
-                /** @example xxxxxxxxxxxxxxxxxx */
-                collection_name: string;
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["listCollections"];
     /** Create new collection */
-    post: {
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            /** @example xxxxxxxxxxxxxxxxxx */
-            collection_name: string;
-          };
-        };
-      };
-    };
+    post: operations["createCollection"];
   };
   "/collection/{collection_name}": {
     /** Get information about a specific collection */
-    get: {
-      parameters: {
-        path: {
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["getCollection"];
     /** Delete a specific collection */
-    delete: {
-      parameters: {
-        path: {
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    delete: operations["deleteCollection"];
   };
   "/collection/{collection_name}/index": {
     /** Get information about an existing indices */
-    get: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              indices: {
-                /** @example xxxxxxxxxxxxxxxxxx */
-                collection_name: string;
-                /** @example xxxxxxxxxxxxxxxxxx */
-                field_name: string;
-                /** Format: int64 */
-                n_documents: number;
-                /** @enum {string} */
-                distance_metric: "euclidean";
-                /** Format: int64 */
-                dimension: number;
-              }[];
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["listIndices"];
     /** Create new index in the specified collection */
-    post: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              field_name: string;
-              /** Format: int64 */
-              n_documents: number;
-              /** @enum {string} */
-              distance_metric: "euclidean";
-              /** Format: int64 */
-              dimension: number;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            /** @example xxxxxxxxxxxxxxxxxx */
-            field_name: string;
-            /** Format: int64 */
-            dimension: number;
-          };
-        };
-      };
-    };
+    post: operations["createIndex"];
     parameters: {
       path: {
         /** The ID of the collection */
@@ -809,125 +84,23 @@ export interface paths {
       };
     };
   };
-  "/collection/{collection_name}/index/{field_name}": {
+  "/collection/{collection_name}/index/{index_name}": {
     /** Get information about specific index */
-    get: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-          /** The ID of the index */
-          field_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              field_name: string;
-              /** Format: int64 */
-              n_documents: number;
-              /** @enum {string} */
-              distance_metric: "euclidean";
-              /** Format: int64 */
-              dimension: number;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["getIndex"];
     /** Delete index */
-    delete: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-          /** The ID of the index */
-          field_name: string;
-        };
-      };
-      responses: {
-        /** successful operation */
-        200: {
-          content: {
-            "application/json": {
-              /** @example xxxxxxxxxxxxxxxxxx */
-              collection_name: string;
-              /** @example xxxxxxxxxxxxxxxxxx */
-              field_name: string;
-              /** Format: int64 */
-              n_documents: number;
-              /** @enum {string} */
-              distance_metric: "euclidean";
-              /** Format: int64 */
-              dimension: number;
-            };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    delete: operations["deleteIndex"];
     parameters: {
       path: {
         /** The ID of the collection */
         collection_name: string;
         /** The ID of the index */
-        field_name: string;
+        index_name: string;
       };
     };
   };
   "/collection/{collection_name}/document": {
-    /** Insert document. The field "field_name" will be indexed by all existing indices */
-    post: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** Insertion successful */
-        200: unknown;
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            documents: ({
-              id: string;
-              /** @example 1,2,3 */
-              field?: number[];
-            } & { [key: string]: unknown })[];
-          };
-        };
-      };
-    };
+    /** Insert document. The field "index_name" can be indexed by an index with the same name */
+    post: operations["insertDocuments"];
     parameters: {
       path: {
         /** The ID of the collection */
@@ -937,58 +110,7 @@ export interface paths {
   };
   "/collection/{collection_name}/document/search": {
     /** Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead */
-    post: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-        };
-      };
-      responses: {
-        /** Insertion successful */
-        200: {
-          content: {
-            "application/json": {
-              data: string[][];
-            }[];
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            /**
-             * @description Get documents close to the specified document. Provide either `ids` or `vectors`
-             * @example document1,document2,document3
-             */
-            ids?: string[];
-            /**
-             * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
-             * @example 1,2,3
-             */
-            vectors?: number[][];
-            /**
-             * @description Maximal number of neighbors to include in response
-             * @default 20
-             */
-            max_neighbors: number;
-            /**
-             * @description This parameter specifies the index to perform the query in
-             * @example xxxxxxxxxxxxxxxxxx
-             */
-            field_name: string;
-          };
-        };
-      };
-    };
+    post: operations["getAnn"];
     parameters: {
       path: {
         /** The ID of the collection */
@@ -998,67 +120,9 @@ export interface paths {
   };
   "/collection/{collection_name}/document/{document_id}": {
     /** Get document by ID */
-    get: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-          /** The ID of the index */
-          document_id: string;
-        };
-      };
-      responses: {
-        /** Insertion successful */
-        200: {
-          content: {
-            "application/json": {
-              id: string;
-              /** @example 1,2,3 */
-              field?: number[];
-            } & { [key: string]: unknown };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
-    /** COMING SOON! Remove document by ID. The corresponding indices will be updated */
-    delete: {
-      parameters: {
-        path: {
-          /** The ID of the collection */
-          collection_name: string;
-          /** The ID of the index */
-          document_id: string;
-        };
-      };
-      responses: {
-        /** Insertion successful */
-        200: {
-          content: {
-            "application/json": {
-              id: string;
-              /** @example 1,2,3 */
-              field?: number[];
-            } & { [key: string]: unknown };
-          };
-        };
-        /** error */
-        default: {
-          content: {
-            "application/json": {
-              error?: string;
-            } & { [key: string]: unknown };
-          };
-        };
-      };
-    };
+    get: operations["getDocument"];
+    /** Remove document by ID. The document is deleted from the collection and the corresponding indices are updated. */
+    delete: operations["deleteDocument"];
     parameters: {
       path: {
         /** The ID of the collection */
@@ -1080,18 +144,25 @@ export interface operations {
       200: {
         content: {
           "application/json": {
+            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c */
             access_token: string;
             /** @enum {string} */
             type: "Bearer";
           };
         };
       };
-      /** error */
-      default: {
+      /** unauthorized */
+      401: unknown;
+      /** forbidden */
+      403: unknown;
+      /** internal server error */
+      500: {
         content: {
-          "application/json": {
-            error?: string;
-          } & { [key: string]: unknown };
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
         };
       };
     };
@@ -1122,12 +193,16 @@ export interface operations {
           };
         };
       };
-      /** error */
-      default: {
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
         content: {
-          "application/json": {
-            error?: string;
-          } & { [key: string]: unknown };
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
         };
       };
     };
@@ -1148,12 +223,16 @@ export interface operations {
           };
         };
       };
-      /** error */
-      default: {
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
         content: {
-          "application/json": {
-            error?: string;
-          } & { [key: string]: unknown };
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
         };
       };
     };
@@ -1178,12 +257,1180 @@ export interface operations {
     responses: {
       /** successful operation */
       200: unknown;
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Get information about databases */
+  listDatabase: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            databases: {
+              id: string;
+              database_name: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              organization_id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              instances: {
+                id: string;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                deleted_at: string | null;
+                /** @enum {string} */
+                status: "awake" | "provisioning" | "wakingup" | "asleep";
+                /**
+                 * @description Instance type
+                 * @default s
+                 * @example s
+                 * @enum {string}
+                 */
+                type: "xs" | "s" | "m" | "l" | "xl";
+                server: {
+                  id?: string;
+                } | null;
+                /**
+                 * @description Size of mounted and volume in gb
+                 * @default 10
+                 * @example 100
+                 */
+                volume_size: number;
+                /**
+                 * @description Physical instance location
+                 * @enum {string}
+                 */
+                location: "hel1" | "nbg1" | "fsn1";
+              }[];
+            }[];
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Create new database. */
+  createDatabase: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            database_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            organization_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            instances: {
+              id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              /** @enum {string} */
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location: "hel1" | "nbg1" | "fsn1";
+            }[];
+          };
+        };
+      };
+      /** successful operation */
+      202: {
+        content: {
+          "application/json": {
+            id: string;
+            database_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            organization_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            instances: {
+              id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              /** @enum {string} */
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location: "hel1" | "nbg1" | "fsn1";
+            }[];
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    /** Newly created database. */
+    requestBody: {
+      content: {
+        "application/json": {
+          database_name: string;
+          /** @description Currently only databases with up to a single instance are supported. */
+          instances?: {
+            /** @enum {string} */
+            location?: "hel1" | "nbg1" | "fsn1";
+            /** @enum {string} */
+            type?: "xs" | "s" | "m" | "l" | "xl";
+            /**
+             * @description Size of mounted and volume in gb
+             * @default 10
+             * @example 100
+             */
+            volume_size?: number;
+          }[];
+        };
+      };
+    };
+  };
+  /** Get information about specific database */
+  getDatabase: {
+    parameters: {
+      path: {
+        /** The ID of the database */
+        database_id: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            database_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            organization_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            instances: {
+              id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              /** @enum {string} */
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location: "hel1" | "nbg1" | "fsn1";
+            }[];
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** not found */
+      404: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Delete a specific database */
+  deleteDatabase: {
+    parameters: {
+      path: {
+        /** The ID of the database */
+        database_id: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      202: {
+        content: {
+          "application/json": {
+            id: string;
+            database_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            organization_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            instances: {
+              id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              /** @enum {string} */
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location: "hel1" | "nbg1" | "fsn1";
+            }[];
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** not found */
+      404: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Get information about instances */
+  listInstances: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            instances: {
+              id: string;
+              /** Format: date-time */
+              created_at: string;
+              /** Format: date-time */
+              deleted_at: string | null;
+              /** @enum {string} */
+              status: "awake" | "provisioning" | "wakingup" | "asleep";
+              /**
+               * @description Instance type
+               * @default s
+               * @example s
+               * @enum {string}
+               */
+              type: "xs" | "s" | "m" | "l" | "xl";
+              server: {
+                id?: string;
+              } | null;
+              /**
+               * @description Size of mounted and volume in gb
+               * @default 10
+               * @example 100
+               */
+              volume_size: number;
+              /**
+               * @description Physical instance location
+               * @enum {string}
+               */
+              location: "hel1" | "nbg1" | "fsn1";
+            }[];
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Create new instance. Currently you can only create a single instance per database. In future versions we will not restrict the number of instances per database. */
+  createInstance: {
+    responses: {
+      /** successful operation */
+      202: {
+        content: {
+          "application/json": {
+            id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            /** @enum {string} */
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
+            /**
+             * @description Instance type
+             * @default s
+             * @example s
+             * @enum {string}
+             */
+            type: "xs" | "s" | "m" | "l" | "xl";
+            server: {
+              id?: string;
+            } | null;
+            /**
+             * @description Size of mounted and volume in gb
+             * @default 10
+             * @example 100
+             */
+            volume_size: number;
+            /**
+             * @description Physical instance location
+             * @enum {string}
+             */
+            location: "hel1" | "nbg1" | "fsn1";
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** forbidden */
+      403: unknown;
+      /** not found */
+      404: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    /** Newly created Instance. */
+    requestBody: {
+      content: {
+        "application/json": {
+          /** @example xxxxxxxxxxxxxxxxxx */
+          database_id: string;
+          /**
+           * @description Instance type
+           * @default s
+           * @example s
+           * @enum {string}
+           */
+          type?: "xs" | "s" | "m" | "l" | "xl";
+          /**
+           * @description Size of mounted and volume in gb
+           * @default 10
+           * @example 100
+           */
+          volume_size?: number;
+          /**
+           * @description Physical instance location
+           * @enum {string}
+           */
+          location?: "hel1" | "nbg1" | "fsn1";
+        };
+      };
+    };
+  };
+  /** Get information about specific instance */
+  getInstance: {
+    parameters: {
+      path: {
+        /** The ID of the instance */
+        instance_id: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            /** @enum {string} */
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
+            /**
+             * @description Instance type
+             * @default s
+             * @example s
+             * @enum {string}
+             */
+            type: "xs" | "s" | "m" | "l" | "xl";
+            server: {
+              id?: string;
+            } | null;
+            /**
+             * @description Size of mounted and volume in gb
+             * @default 10
+             * @example 100
+             */
+            volume_size: number;
+            /**
+             * @description Physical instance location
+             * @enum {string}
+             */
+            location: "hel1" | "nbg1" | "fsn1";
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** forbidden */
+      403: unknown;
+      /** not found */
+      404: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Delete a specific Instance */
+  deleteInstance: {
+    parameters: {
+      path: {
+        /** The ID of the instance */
+        instance_id: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      202: {
+        content: {
+          "application/json": {
+            id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at: string | null;
+            /** @enum {string} */
+            status: "awake" | "provisioning" | "wakingup" | "asleep";
+            /**
+             * @description Instance type
+             * @default s
+             * @example s
+             * @enum {string}
+             */
+            type: "xs" | "s" | "m" | "l" | "xl";
+            server: {
+              id?: string;
+            } | null;
+            /**
+             * @description Size of mounted and volume in gb
+             * @default 10
+             * @example 100
+             */
+            volume_size: number;
+            /**
+             * @description Physical instance location
+             * @enum {string}
+             */
+            location: "hel1" | "nbg1" | "fsn1";
+          };
+        };
+      };
+      /** bad request */
+      400: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** unauthorized */
+      401: unknown;
+      /** forbidden */
+      403: unknown;
+      /** not found */
+      404: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+      /** internal server error */
+      500: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Get information about collections */
+  listCollections: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            collections: {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name: string;
+            }[];
+          };
+        };
+      };
       /** error */
       default: {
         content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Create new collection */
+  createCollection: {
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
           "application/json": {
-            error?: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** @example xxxxxxxxxxxxxxxxxx */
+          collection_name: string;
+        };
+      };
+    };
+  };
+  /** Get information about a specific collection */
+  getCollection: {
+    parameters: {
+      path: {
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Delete a specific collection */
+  deleteCollection: {
+    parameters: {
+      path: {
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Get information about an existing indices */
+  listIndices: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            indices: {
+              /** @example xxxxxxxxxxxxxxxxxx */
+              collection_name: string;
+              /** @example xxxxxxxxxxxxxxxxxx */
+              index_name: string;
+              /** Format: int64 */
+              n_documents: number;
+              /** @enum {string} */
+              distance_metric: "euclidean";
+              /** Format: int64 */
+              dimension: number;
+            }[];
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Create new index in the specified collection */
+  createIndex: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            index_name: string;
+            /** Format: int64 */
+            n_documents: number;
+            /** @enum {string} */
+            distance_metric: "euclidean";
+            /** Format: int64 */
+            dimension: number;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** @example xxxxxxxxxxxxxxxxxx */
+          index_name: string;
+          /** Format: int64 */
+          dimension: number;
+        };
+      };
+    };
+  };
+  /** Get information about specific index */
+  getIndex: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+        /** The ID of the index */
+        index_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            index_name: string;
+            /** Format: int64 */
+            n_documents: number;
+            /** @enum {string} */
+            distance_metric: "euclidean";
+            /** Format: int64 */
+            dimension: number;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Delete index */
+  deleteIndex: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+        /** The ID of the index */
+        index_name: string;
+      };
+    };
+    responses: {
+      /** successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example xxxxxxxxxxxxxxxxxx */
+            collection_name: string;
+            /** @example xxxxxxxxxxxxxxxxxx */
+            index_name: string;
+            /** Format: int64 */
+            n_documents: number;
+            /** @enum {string} */
+            distance_metric: "euclidean";
+            /** Format: int64 */
+            dimension: number;
+          };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Insert document. The field "index_name" can be indexed by an index with the same name */
+  insertDocuments: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** Insertion successful */
+      200: unknown;
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          documents: ({
+            id: string;
+            /** @example 1,2,3 */
+            field?: number[];
+          } & { [key: string]: unknown })[];
+        };
+        "application/octet-stream": string;
+      };
+    };
+  };
+  /** Search for nearest vectors to specified vector. Instead of specifying `vector: <array>` you can search for similar documents directly by setting `id: <document_id>` instead */
+  getAnn: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+      };
+    };
+    responses: {
+      /** Insertion successful */
+      200: {
+        content: {
+          "application/json": {
+            data: string[][];
+          }[];
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /**
+           * @description Get documents close to the specified document. Provide either `ids` or `vectors`
+           * @example document1,document2,document3
+           */
+          ids?: string[];
+          /**
+           * @description Get documents close to the vector. The length of the vector must be equal to the dimension specified in the index
+           * @example 1,2,3
+           */
+          vectors?: number[][];
+          /**
+           * @description Maximal number of neighbors to include in response
+           * @default 20
+           */
+          max_neighbors: number;
+          /**
+           * @description This parameter specifies the index to perform the query in
+           * @example xxxxxxxxxxxxxxxxxx
+           */
+          index_name: string;
+        };
+        "application/octet-stream": string;
+      };
+    };
+  };
+  /** Get document by ID */
+  getDocument: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+        /** The ID of the index */
+        document_id: string;
+      };
+    };
+    responses: {
+      /** Insertion successful */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            /** @example 1,2,3 */
+            field?: number[];
           } & { [key: string]: unknown };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
+        };
+      };
+    };
+  };
+  /** Remove document by ID. The document is deleted from the collection and the corresponding indices are updated. */
+  deleteDocument: {
+    parameters: {
+      path: {
+        /** The ID of the collection */
+        collection_name: string;
+        /** The ID of the index */
+        document_id: string;
+      };
+    };
+    responses: {
+      /** Insertion successful */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            /** @example 1,2,3 */
+            field?: number[];
+          } & { [key: string]: unknown };
+        };
+      };
+      /** error */
+      default: {
+        content: {
+          "application/json":
+            | ({
+                error: string;
+              } & { [key: string]: unknown })
+            | null;
         };
       };
     };

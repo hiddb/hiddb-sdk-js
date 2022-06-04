@@ -1,6 +1,6 @@
 {
   "name": "hiddb",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "",
   "source": "src/index.ts",
   "main": "dist/main.js",
@@ -10,7 +10,7 @@
     "watch": "parcel watch",
     "build": "parcel build",
     "update:openapi": "npm i -D git+https://github.com/hiddb/openapi.git#main && npm run build:types",
-    "build:types": "openapi-typescript openapi.yaml --output src/hiddb.d.ts"
+    "build:types": "openapi-typescript node_modules/@hiddb/openapi/dist/openapi_public.yaml --output src/hiddb.d.ts"
   },
   "author": "",
   "license": "ISC",

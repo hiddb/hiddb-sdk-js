@@ -390,12 +390,12 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async createIndex(databaseId: string, collection_name: string, field_name: string, dimension: number) {
+  async createIndex(databaseId: string, collection_name: string, index_name: string, dimension: number) {
     const rawPath = "/collection/{collection_name}/index" as const;
     const path = `/collection/${collection_name}/index` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
-      field_name: field_name,
+      index_name,
       dimension
     };
 
@@ -423,7 +423,7 @@ export class HIDDB extends EventTarget {
 
 
   async getIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
+    const rawPath = "/collection/{collection_name}/index/{index_name}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "get" as const;
 
@@ -435,7 +435,7 @@ export class HIDDB extends EventTarget {
   }
 
   async deleteIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
+    const rawPath = "/collection/{collection_name}/index/{index_name}" as const;
     const path = `/collection/${collection_name}/index/${index_name}` as const;
     const method = "delete" as const;
 
@@ -465,13 +465,13 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], field_name: string, max_neighbors: number) {
+  async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], index_name: string, max_neighbors: number) {
     const rawPath = "/collection/{collection_name}/document/search" as const;
     const path = `/collection/${collection_name}/document/search` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       vectors: [vector],
-      field_name: field_name,
+      index_name,
       max_neighbors: max_neighbors
     };
 
