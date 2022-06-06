@@ -9,13 +9,13 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "update:openapi": "npm i -D git+https://github.com/hiddb/openapi.git#main && npm run build:types",
+    "update:openapi": "npm i -D git+https://github.com/hiddb/openapi.git#36f2342bf998af2ff95b431ca04c342f1bbf375d && npm run build:types && npm run build",
     "build:types": "openapi-typescript node_modules/@hiddb/openapi/dist/openapi_public.yaml --output src/hiddb.d.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@hiddb/openapi": "github:hiddb/openapi#main",
+    "@hiddb/openapi": "github:hiddb/openapi#36f2342bf998af2ff95b431ca04c342f1bbf375d",
     "@parcel/packager-ts": "^2.3.2",
     "@parcel/transformer-typescript-types": "^2.3.2",
     "@types/js-cookie": "^3.0.1",

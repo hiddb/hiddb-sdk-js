@@ -1004,6 +1004,8 @@ export interface operations {
             collections: {
               /** @example xxxxxxxxxxxxxxxxxx */
               collection_name: string;
+              /** Format: int64 */
+              n_documents: number;
             }[];
           };
         };
@@ -1029,6 +1031,8 @@ export interface operations {
           "application/json": {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
+            /** Format: int64 */
+            n_documents: number;
           };
         };
       };
@@ -1066,6 +1070,8 @@ export interface operations {
           "application/json": {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
+            /** Format: int64 */
+            n_documents: number;
           };
         };
       };
@@ -1095,6 +1101,8 @@ export interface operations {
           "application/json": {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
+            /** Format: int64 */
+            n_documents: number;
           };
         };
       };

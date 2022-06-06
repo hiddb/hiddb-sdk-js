@@ -212,21 +212,25 @@ export class HIDDB extends EventTarget {
     }>;
     createCollection(databaseId: string, name: string): Promise<{
         collection_name: string;
+        n_documents: number;
     }>;
     listCollections(databaseId: string): Promise<{
         collections: {
             collection_name: string;
+            n_documents: number;
         }[];
     }>;
     getCollection(databaseId: string, name: string): Promise<{
         collection_name: string;
+        n_documents: number;
     }>;
     deleteCollection(databaseId: string, name: string): Promise<{
         collection_name: string;
+        n_documents: number;
     }>;
-    createIndex(databaseId: string, collection_name: string, field_name: string, dimension: number): Promise<{
+    createIndex(databaseId: string, collection_name: string, index_name: string, dimension: number): Promise<{
         collection_name: string;
-        field_name: string;
+        index_name: string;
         n_documents: number;
         distance_metric: "euclidean";
         dimension: number;
@@ -234,7 +238,7 @@ export class HIDDB extends EventTarget {
     listIndices(databaseId: string, collection_name: string): Promise<{
         indices: {
             collection_name: string;
-            field_name: string;
+            index_name: string;
             n_documents: number;
             distance_metric: "euclidean";
             dimension: number;
@@ -242,14 +246,14 @@ export class HIDDB extends EventTarget {
     }>;
     getIndex(databaseId: string, collection_name: string, index_name: string): Promise<{
         collection_name: string;
-        field_name: string;
+        index_name: string;
         n_documents: number;
         distance_metric: "euclidean";
         dimension: number;
     }>;
     deleteIndex(databaseId: string, collection_name: string, index_name: string): Promise<{
         collection_name: string;
-        field_name: string;
+        index_name: string;
         n_documents: number;
         distance_metric: "euclidean";
         dimension: number;
@@ -258,7 +262,7 @@ export class HIDDB extends EventTarget {
         id: string;
         [key: string]: string;
     }): Promise<unknown>;
-    searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], field_name: string, max_neighbors: number): Promise<{
+    searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], index_name: string, max_neighbors: number): Promise<{
         data: string[][];
     }[]>;
     getDocument(databaseId: string, collection_name: string, id: string): Promise<{

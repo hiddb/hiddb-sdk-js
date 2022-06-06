@@ -238,12 +238,12 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         this.dispatchEvent(new Event('collectionDeleted'));
         return response.data;
     }
-    async createIndex(databaseId, collection_name, field_name, dimension) {
+    async createIndex(databaseId, collection_name, index_name, dimension) {
         const rawPath = "/collection/{collection_name}/index";
         const path = `/collection/${collection_name}/index`;
         const method = "post";
         const body = {
-            field_name: field_name,
+            index_name: index_name,
             dimension: dimension
         };
         const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
@@ -259,14 +259,14 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         return response.data;
     }
     async getIndex(databaseId, collection_name, index_name) {
-        const rawPath = "/collection/{collection_name}/index/{field_name}";
+        const rawPath = "/collection/{collection_name}/index/{index_name}";
         const path = `/collection/${collection_name}/index/${index_name}`;
         const method = "get";
         const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
         return response.data;
     }
     async deleteIndex(databaseId, collection_name, index_name) {
-        const rawPath = "/collection/{collection_name}/index/{field_name}";
+        const rawPath = "/collection/{collection_name}/index/{index_name}";
         const path = `/collection/${collection_name}/index/${index_name}`;
         const method = "delete";
         const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`);
@@ -286,7 +286,7 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
         const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
         return response.data;
     }
-    async searchNearestDocuments(databaseId, collection_name, vector, field_name, max_neighbors) {
+    async searchNearestDocuments(databaseId, collection_name, vector, index_name, max_neighbors) {
         const rawPath = "/collection/{collection_name}/document/search";
         const path = `/collection/${collection_name}/document/search`;
         const method = "post";
@@ -294,7 +294,7 @@ class $882b6d93070905b3$export$5192b5e175132710 extends EventTarget {
             vectors: [
                 vector
             ],
-            field_name: field_name,
+            index_name: index_name,
             max_neighbors: max_neighbors
         };
         const response = await this.axios[method](`https://${databaseId}.${this.dbDomain}${path}`, body);
