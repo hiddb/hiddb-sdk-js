@@ -390,12 +390,12 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async createIndex(databaseId: string, collection_name: string, index_name: string, dimension: number) {
+  async createIndex(databaseId: string, collection_name: string, field_name: string, dimension: number) {
     const rawPath = "/collection/{collection_name}/index" as const;
     const path = `/collection/${collection_name}/index` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
-      index_name,
+      field_name,
       dimension
     };
 
@@ -422,9 +422,9 @@ export class HIDDB extends EventTarget {
   }
 
 
-  async getIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_name}/index/{index_name}" as const;
-    const path = `/collection/${collection_name}/index/${index_name}` as const;
+  async getIndex(databaseId: string, collection_name: string, field_name: string) {
+    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
+    const path = `/collection/${collection_name}/index/${field_name}` as const;
     const method = "get" as const;
 
     const response = await this.axios[method]<
@@ -434,9 +434,9 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async deleteIndex(databaseId: string, collection_name: string, index_name: string) {
-    const rawPath = "/collection/{collection_name}/index/{index_name}" as const;
-    const path = `/collection/${collection_name}/index/${index_name}` as const;
+  async deleteIndex(databaseId: string, collection_name: string, field_name: string) {
+    const rawPath = "/collection/{collection_name}/index/{field_name}" as const;
+    const path = `/collection/${collection_name}/index/${field_name}` as const;
     const method = "delete" as const;
 
     const response = await this.axios[method]<
@@ -465,13 +465,13 @@ export class HIDDB extends EventTarget {
     return response.data;
   }
 
-  async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], index_name: string, max_neighbors: number) {
+  async searchNearestDocuments(databaseId: string, collection_name: string, vector: [number], field_name: string, max_neighbors: number) {
     const rawPath = "/collection/{collection_name}/document/search" as const;
     const path = `/collection/${collection_name}/document/search` as const;
     const method = "post" as const;
     const body: paths[typeof rawPath][typeof method]["requestBody"]["content"]["application/json"] = {
       vectors: [vector],
-      index_name,
+      field_name,
       max_neighbors: max_neighbors
     };
 

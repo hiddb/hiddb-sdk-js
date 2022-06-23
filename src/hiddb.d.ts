@@ -84,7 +84,7 @@ export interface paths {
       };
     };
   };
-  "/collection/{collection_name}/index/{index_name}": {
+  "/collection/{collection_name}/index/{field_name}": {
     /** Get information about specific index */
     get: operations["getIndex"];
     /** Delete index */
@@ -94,12 +94,12 @@ export interface paths {
         /** The ID of the collection */
         collection_name: string;
         /** The ID of the index */
-        index_name: string;
+        field_name: string;
       };
     };
   };
   "/collection/{collection_name}/document": {
-    /** Insert document. The field "index_name" can be indexed by an index with the same name */
+    /** Insert document. The field "field_name" can be indexed by an index with the same name */
     post: operations["insertDocuments"];
     parameters: {
       path: {
@@ -1135,7 +1135,7 @@ export interface operations {
               /** @example xxxxxxxxxxxxxxxxxx */
               collection_name: string;
               /** @example xxxxxxxxxxxxxxxxxx */
-              index_name: string;
+              field_name: string;
               /** Format: int64 */
               n_documents: number;
               /** @enum {string} */
@@ -1174,7 +1174,7 @@ export interface operations {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
             /** @example xxxxxxxxxxxxxxxxxx */
-            index_name: string;
+            field_name: string;
             /** Format: int64 */
             n_documents: number;
             /** @enum {string} */
@@ -1199,7 +1199,7 @@ export interface operations {
       content: {
         "application/json": {
           /** @example xxxxxxxxxxxxxxxxxx */
-          index_name: string;
+          field_name: string;
           /** Format: int64 */
           dimension: number;
         };
@@ -1213,7 +1213,7 @@ export interface operations {
         /** The ID of the collection */
         collection_name: string;
         /** The ID of the index */
-        index_name: string;
+        field_name: string;
       };
     };
     responses: {
@@ -1224,7 +1224,7 @@ export interface operations {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
             /** @example xxxxxxxxxxxxxxxxxx */
-            index_name: string;
+            field_name: string;
             /** Format: int64 */
             n_documents: number;
             /** @enum {string} */
@@ -1253,7 +1253,7 @@ export interface operations {
         /** The ID of the collection */
         collection_name: string;
         /** The ID of the index */
-        index_name: string;
+        field_name: string;
       };
     };
     responses: {
@@ -1264,7 +1264,7 @@ export interface operations {
             /** @example xxxxxxxxxxxxxxxxxx */
             collection_name: string;
             /** @example xxxxxxxxxxxxxxxxxx */
-            index_name: string;
+            field_name: string;
             /** Format: int64 */
             n_documents: number;
             /** @enum {string} */
@@ -1286,7 +1286,7 @@ export interface operations {
       };
     };
   };
-  /** Insert document. The field "index_name" can be indexed by an index with the same name */
+  /** Insert document. The field "field_name" can be indexed by an index with the same name */
   insertDocuments: {
     parameters: {
       path: {
@@ -1371,7 +1371,7 @@ export interface operations {
            * @description This parameter specifies the index to perform the query in
            * @example xxxxxxxxxxxxxxxxxx
            */
-          index_name: string;
+          field_name: string;
         };
         "application/octet-stream": string;
       };
